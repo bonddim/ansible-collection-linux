@@ -1,0 +1,36 @@
+---
+namespace: bonddim
+name: linux
+description: Linux roles collection for different purposes
+version: 0.0.1
+authors:
+  - Dmytro Bondar
+
+readme: README.md
+repository: https://github.com/bonddim/ansible-collection-linux
+issues: https://github.com/bonddim/ansible-collection-linux/issues
+documentation: https://github.com/bonddim/ansible-collection-linux/blob/main/README.md
+homepage: https://github.com/bonddim/ansible-collection-linux
+license_file: LICENSE
+license: []
+
+dependencies:
+  community.general: '>=0.1.1'
+
+tags:
+  - linux
+  - system
+  - development
+  - networking
+  - packaging
+  - web
+  - virtualization
+
+build_ignore:
+  - .ansible-lint
+  - .cache
+  - .github
+  - .gitignore
+  - .tox
+  - .yamllint
+  - molecule
