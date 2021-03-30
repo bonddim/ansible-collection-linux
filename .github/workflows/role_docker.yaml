@@ -22,6 +22,9 @@ jobs:
     # skip job on pull requests from base repository
     if: github.event.pull_request.head.repo.full_name != github.repository
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
     strategy:
       fail-fast: false
       matrix:
@@ -49,9 +52,13 @@ jobs:
         with:
           python-version: '3.x'
       - uses: bonddim/action-lxd-init@stable
-      - run: python3 -m pip install tox
-      - run: tox -e ${{ matrix.ansible }} -- ${{ github.workflow }}
-        working-directory: ./ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+      - name: Install test dependencies
+        run: python3 -m pip install -r requirements.txt https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
+      - name: Build and install the collection
+        run: |
+          ansible-galaxy collection build
+          ansible-galaxy collection install ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
+      - run: molecule test -s ${{ github.workflow }}
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}
           ANSIBLE_FORCE_COLOR: true
