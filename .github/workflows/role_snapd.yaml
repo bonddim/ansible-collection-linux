@@ -4,14 +4,14 @@ name: snapd
 on:
   push:
     paths:
-      - 'roles/${{ github.workflow }}/**'
-      - 'molecule/${{ github.workflow }}/**'
-      - '.github/workflows/role_${{ github.workflow }}.yaml'
+      - 'roles/snapd/**'
+      - 'molecule/snapd/**'
+      - '.github/workflows/role_snapd.yaml'
   pull_request:
     paths:
-      - 'roles/${{ github.workflow }}/**'
-      - 'molecule/${{ github.workflow }}/**'
-      - '.github/workflows/role_${{ github.workflow }}.yaml'
+      - 'roles/snapd/**'
+      - 'molecule/snapd/**'
+      - '.github/workflows/role_snapd.yaml'
   schedule:
     - cron: '0 0 * * 0'
 
