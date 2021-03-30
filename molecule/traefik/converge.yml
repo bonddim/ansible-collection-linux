@@ -12,7 +12,7 @@
       block:
         - name: Install Docker daemon
           ansible.builtin.include_role:
-            name: bonddim.docker
+            name: bonddim.linux.docker
           when: not "docker0" in ansible_interfaces
 
         - name: Install pip package
