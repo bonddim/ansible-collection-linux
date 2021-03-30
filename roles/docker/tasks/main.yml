@@ -30,6 +30,6 @@
     append: true
   loop: "{{ docker_users }}"
 
-- name:
+- name: Install docker-compose
   ansible.builtin.include_tasks: compose.yml
   when: docker_compose_install | bool
