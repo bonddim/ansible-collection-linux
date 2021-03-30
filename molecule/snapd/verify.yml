@@ -1,0 +1,16 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Install hello-world snap
+      community.general.snap:
+        name: hello-world
+
+    - name: Run hello-world snap
+      ansible.builtin.command: hello-world
+      register: snap_hello
+
+    - name: Verify command output
+      ansible.builtin.assert:
+        that: "'Hello World!' in snap_hello.stdout"
