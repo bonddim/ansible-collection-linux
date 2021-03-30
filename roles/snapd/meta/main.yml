@@ -1,0 +1,21 @@
+---
+dependencies: []
+galaxy_info:
+  description: "Install snap core and snap packages from https://snapcraft.io/store"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - 31
+        - 32
+        - 33
+    - name: EL
+      versions:
+        - 7
+        - 8
+  galaxy_tags: []

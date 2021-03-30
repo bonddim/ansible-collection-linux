@@ -1,0 +1,59 @@
+# tasks file for snapd role
+---
+- name: Ensure that EPEL package is installed
+  ansible.builtin.package:
+    name: epel-release
+    state: present
+    update_cache: true
+  when: ansible_distribution == "CentOS"
+  tags: snap, snap-install
+
+- name: Install snapd package
+  ansible.builtin.package:
+    name: snapd
+    state: present
+    update_cache: true
+    enablerepo: "{{ (ansible_distribution == 'CentOS') | ternary('cr,epel', omit) }}"
+  tags: snap, snap-install
+
+- name: Install fuse packages to run snaps in virtualized environments
+  ansible.builtin.package:
+    name: fuse, squashfuse
+    state: present
+    enablerepo: "{{ (ansible_distribution == 'CentOS') | ternary('epel', omit) }}"
+  when:
+    - ansible_virtualization_role == "guest"
+    - ansible_distribution != "Debian" or ansible_distribution_version | int >= 10
+  tags: snap, snap-install
+
+- name: Enable and start snapd socket
+  ansible.builtin.service:
+    name: snapd.socket
+    state: started
+    enabled: true
+  tags: snap, snap-socket
+
+- name: Enable classic snap support on RedHat systems
+  ansible.builtin.file:
+    path: /snap
+    src: /var/lib/snapd/snap
+    state: link
+  when: ansible_os_family == "RedHat"
+  tags: snap, snap-install
+
+- name: Install snap core
+  community.general.snap:
+    name: core
+  register: result
+  until: result is not failed
+  retries: 3
+  tags: snap, snap-install
+
+- name: Install packages from snap
+  community.general.snap:
+    name: "{{ item.name | default(item) }}"
+    channel: "{{ item.channel | default('stable') }}"
+    classic: "{{ item.classic | default(false) }}"
+  loop: "{{ snap_packages }}"
+  when: snap_packages is defined
+  tags: snap, snap-packages
