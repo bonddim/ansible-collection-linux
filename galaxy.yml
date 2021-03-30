@@ -32,6 +32,5 @@ build_ignore:
   - .cache
   - .github
   - .gitignore
-  - .tox
   - .yamllint
   - molecule
