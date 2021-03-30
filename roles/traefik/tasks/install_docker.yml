@@ -1,11 +1,11 @@
 ---
 - name: Ensure traefik docker network state
-  community.general.docker_network:
+  community.docker.docker_network:
     name: "{{ traefik_docker_network }}"
     state: present
 
 - name: Launch traefik container
-  community.general.docker_container:
+  community.docker.docker_container:
     name: traefik
     image: "traefik:{{ traefik_version }}"
     pull: true

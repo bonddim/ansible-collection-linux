@@ -44,7 +44,7 @@ jobs:
         with:
           python-version: '3.x'
       - uses: bonddim/action-lxd-init@stable
-      - name: Install required packages
+      - name: Install test dependencies
         run: python3 -m pip install -r requirements.txt https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
       - name: Build and install the collection
         run: |
