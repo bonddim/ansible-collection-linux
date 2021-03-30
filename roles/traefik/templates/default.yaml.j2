@@ -1,0 +1,66 @@
+---
+### {{ ansible_managed }}
+http:
+  routers:
+  {% if traefik_dashboard_enable %}
+    traefik:
+      entrypoints: [{{ traefik_enable_https | ternary('websecure', 'web') }}]
+      rule: {% if traefik_host_domainname %}"Host(`traefik.{{ traefik_host_domainname }}`)"
+            {% else %}"PathPrefix(`/api`) || PathPrefix(`/dashboard`)"
+            {% endif %}
+      service: api@internal
+      middlewares: {{ traefik_dashboard_middlewares }}
+  {% endif %}
+
+  middlewares:
+    default-security:
+      chain:
+        middlewares:
+          - rate-limit
+          - secure-headers
+    auth-basic:
+      basicAuth:
+        headerField: X-WebAuth-User
+        users:
+          - "{{ traefik_basic_auth_user }}:{{ traefik_basic_auth_pass }}"
+    rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
+    secure-headers:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - OPTIONS
+          - POST
+          - PUT
+        accessControlMaxAge: 100
+        addVaryHeader: true
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        sslRedirect: true
+        sslTemporaryRedirect: true
+        stsSeconds: 63072000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        forceSTSHeader: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        referrerPolicy: "origin-when-cross-origin,strict-origin-when-cross-origin"
+        contentSecurityPolicy: "frame-ancestors 'self';"
+        featurePolicy: "geolocation 'none';midi 'none'; sync-xhr 'none';microphone 'none';camera 'none';magnetometer 'none';gyroscope 'none';fullscreen 'self';payment 'none';usb 'none';vr 'none';"
+        customResponseHeaders:
+          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex,"
+          server: ""
+
+tls:
+  options:
+    default:
+      minVersion: VersionTLS12
+      cipherSuites:
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256

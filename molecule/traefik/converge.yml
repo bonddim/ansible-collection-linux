@@ -1,0 +1,29 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  become: true
+  vars:
+    traefik_install_method: "{{ lookup('env', 'INSTALL_METHOD') }}"
+    traefik_provider_docker: "{{ (traefik_install_method == 'docker') | ternary(true, false) }}"
+
+  pre_tasks:
+    - when: traefik_install_method == 'docker'
+      block:
+        - name: Install Docker daemon
+          ansible.builtin.include_role:
+            name: bonddim.docker
+          when: not "docker0" in ansible_interfaces
+
+        - name: Install pip package
+          ansible.builtin.package:
+            name: python3-pip
+            state: present
+
+        - name: Install Docker SDK for Python
+          ansible.builtin.pip:
+            name: docker
+            state: present
+
+  roles:
+    - bonddim.linux.traefik

@@ -1,0 +1,39 @@
+---
+# assertion tasks for traefik role
+- name: Check traefik version
+  ansible.builtin.assert:
+    that:
+      - traefik_version == 'latest' or (traefik_version is match("v(\d+\.){2}\d+") and traefik_version is version('v2.0', '>='))
+    fail_msg: traefik_version should be 'latest' or in 'vX.Y.Z' format and greater than v2.0
+
+- name: Check acme tls variables
+  ansible.builtin.assert:
+    that:
+      - traefik_acme_email | length > 0
+      - traefik_host_domainname | length > 0
+  when:
+    - traefik_enable_https | bool
+    - traefik_acme_enable | bool
+
+- name: Check acme tls dns provider
+  ansible.builtin.assert:
+    that:
+      - traefik_acme_dns_provider | length > 0
+      - traefik_env | length > 0
+  when:
+    - traefik_enable_https | bool
+    - traefik_acme_enable | bool
+    - traefik_acme_challenge == 'dns'
+
+- name: Get existing system groups
+  ansible.builtin.getent:
+    database: group
+
+- name: Check docker availability
+  ansible.builtin.assert:
+    that:
+      - "'docker' in getent_group"
+    fail_msg: Install docker or set traefik_provider_docker_endpoint variable first
+  when:
+    - traefik_provider_docker | bool
+    - traefik_provider_docker_endpoint | length == 0

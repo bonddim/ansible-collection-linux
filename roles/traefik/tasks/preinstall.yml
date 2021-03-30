@@ -1,0 +1,34 @@
+---
+- name: Create traefik system group
+  ansible.builtin.group:
+    name: "{{ traefik_group }}"
+    state: present
+    system: true
+
+- name: Create traefik system user
+  ansible.builtin.user:
+    name: "{{ traefik_user }}"
+    group: "{{ traefik_group }}"
+    groups: "{{ (traefik_provider_docker and not traefik_provider_docker_endpoint and 'docker' in getent_group) | ternary('docker', omit) }}"
+    comment: "Cloud Native Application Proxy"
+    home: "{{ traefik_home }}"
+    create_home: false
+    shell: /bin/false
+    state: present
+    system: true
+
+- name: Create traefik directories and acme storage
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    state: "{{ item.state }}"
+    owner: "{{ traefik_user }}"
+    group: "{{ traefik_group }}"
+    mode: "{{ item.mode }}"
+    access_time: preserve
+    modification_time: preserve
+  loop:
+    - { mode: "0755", state: directory, path: "{{ traefik_home }}" }
+    - { mode: "0755", state: directory, path: "{{ traefik_configdir_dynamic }}" }
+    - { mode: "0600", state: touch, path: "{{ traefik_acme_storage_file }}" }
+  loop_control:
+    label: "{{ item.path }}"

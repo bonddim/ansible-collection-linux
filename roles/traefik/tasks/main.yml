@@ -1,0 +1,20 @@
+---
+# tasks file for traefik role
+- name: Check required variables
+  ansible.builtin.import_tasks: assert.yml
+  tags: traefik, assert, always
+
+- name: Run pre-installation tasks
+  ansible.builtin.import_tasks: preinstall.yml
+  tags: traefik, traefik-preinstall
+
+- name: Run configuration tasks
+  ansible.builtin.import_tasks: config.yml
+  tags: traefik, traefik-config
+
+- name: Run install method tasks
+  ansible.builtin.include_tasks:
+    file: "install_{{ traefik_install_method }}.yml"
+    apply:
+      tags: traefik, traefik-install
+  tags: traefik, traefik-install

@@ -1,0 +1,46 @@
+---
+# defaults file for traefik role
+# Common vars
+traefik_version: latest
+traefik_install_method: binary  ## possible values: binary, docker
+
+traefik_host_domainname: ""
+traefik_env: {}
+
+# Docker related vars
+traefik_docker_network: bridge
+
+# Dashboard
+traefik_dashboard_enable: true
+traefik_dashboard_middlewares: auth-basic@file
+
+# Basic auth
+traefik_basic_auth_user: admin
+traefik_basic_auth_pass: $apr1$MR6nE9XC$lC2fnUmGLmsZDGqNlcdxU0  # 'admin' - generated with htpasswd
+
+# Logs
+traefik_log_level: ERROR
+traefik_log_format: json
+traefik_log_filepath: ""
+
+# HTTPS
+traefik_enable_https: false
+traefik_enable_https_redirect: true
+
+# ACME (Let's Encrypt) https://doc.traefik.io/traefik/https/acme
+traefik_acme_enable: true
+traefik_acme_email: ""
+traefik_acme_domains: [ { main: "{{ traefik_host_domainname }}", sans: [ "*.{{ traefik_host_domainname }}" ] } ]
+traefik_acme_challenge: dns  # possible values: dns, tls, http
+traefik_acme_dns_provider: ""
+traefik_acme_dns_disablepropagationcheck: false
+traefik_acme_staging: false
+
+# Providers
+traefik_provider_docker: false
+traefik_provider_docker_exposebydefault: false
+traefik_provider_docker_defaultrule: ""
+traefik_provider_docker_endpoint: ""
+
+# Custom dynamic config https://doc.traefik.io/traefik/reference/dynamic-configuration/file
+traefik_custom_config: {}

@@ -1,0 +1,31 @@
+---
+- name: Ensure traefik docker network state
+  community.general.docker_network:
+    name: "{{ traefik_docker_network }}"
+    state: present
+
+- name: Launch traefik container
+  community.general.docker_container:
+    name: traefik
+    image: "traefik:{{ traefik_version }}"
+    pull: true
+    ignore_image: false
+    state: started
+    recreate: false
+    restart: "{{ _traefik_config.changed | default(false) }}"
+    restart_policy: unless-stopped
+    container_default_behavior: "{{ (ansible_version.full is version('2.10', '>=')) | ternary('compatibility', omit) }}"
+    network_mode: "{{ traefik_docker_network }}"
+    security_opts:
+      - no-new-privileges:true
+    published_ports:
+      - "80:80"
+      - "443:443"
+    command:
+      - --configfile "{{ traefik_configfile_static }}"
+    env: "{{ traefik_env }}"
+    volumes: "{{ traefik_mount_volumes | select | list }}"
+  vars:
+    traefik_mount_volumes:
+      - "{{ traefik_home }}:{{ traefik_home }}"
+      - "{{ traefik_provider_docker_endpoint | ternary('', '/var/run/docker.sock:/var/run/docker.sock:ro') }}"

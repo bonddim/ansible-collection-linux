@@ -1,0 +1,46 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  vars_files:
+    - "{{ playbook_dir }}/../../defaults/main.yml"
+
+  tasks:
+    - name: Send GET request to traefik dashboard
+      ansible.builtin.uri:
+        url: http://127.0.0.1/dashboard/
+        follow_redirects: all
+        user: "{{ traefik_basic_auth_user }}"
+        password: "{{ traefik_basic_auth_user }}"
+        method: GET
+      register: dashboard
+      until: dashboard.status == 200
+      retries: 3
+      delay: 5
+
+    - when: lookup('env', 'INSTALL_METHOD') == 'docker'
+      block:
+        - name: Start whoami container
+          community.general.docker_container:
+            name: whoami
+            image: traefik/whoami:latest
+            state: started
+            container_default_behavior: "{{ (ansible_version.full is version('2.10', '>=')) | ternary('compatibility', omit) }}"
+            networks:
+              - name: "{{ traefik_docker_network }}"
+            networks_cli_compatible: true
+            network_mode: default
+            labels:
+              traefik.enable: "true"
+
+        - name: Send request to whoami
+          ansible.builtin.uri:
+            url: http://127.0.0.1
+            follow_redirects: none
+            method: GET
+            headers:
+              Host: whoami
+          register: whoami
+          until: whoami.status == 200
+          retries: 3
+          delay: 5

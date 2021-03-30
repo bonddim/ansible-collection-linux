@@ -1,0 +1,63 @@
+---
+- name: Generate systemd service file
+  ansible.builtin.template:
+    dest: /etc/systemd/system/traefik.service
+    src: traefik.service.j2
+    owner: root
+    group: root
+    mode: 0644
+  register: _traefik_service_file
+  notify: traefik_restart
+
+- name: Check installed version
+  ansible.builtin.shell:
+    executable: /bin/bash
+    cmd: set -o pipefail && traefik version | head -1 | grep -Po '[\d\.]+\S*'
+  register: _traefik_installed
+  changed_when: false
+  failed_when: false
+
+- when: traefik_version == 'latest'
+  block:
+    - name: Get all traefik releases
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/traefik/traefik/releases
+        method: GET
+        headers:
+          Accept: application/vnd.github.v3+json
+      register: _traefik_releases
+
+    - name: Get latest traefik release name
+      ansible.builtin.set_fact:
+        _traefik_release: "{{ (_traefik_releases.json | map(attribute='tag_name') | reject('<', 'v2.0.0') | sort)[-1] }}"
+
+- name: Set traefik version number
+  ansible.builtin.set_fact:
+    _traefik_version: "{{ (traefik_version == 'latest') | ternary(_traefik_release, traefik_version) }}"
+
+- when: _traefik_version | regex_replace('^v') is version(_traefik_installed.stdout | default('0', true), '!=' )
+  # run when the required traefik version and the installed one are different
+  block:
+    - name: Show traefik version
+      ansible.builtin.debug:
+        msg: "Traefik version to install: {{ _traefik_version }}"
+
+    - name: Download and extract archive
+      ansible.builtin.unarchive:
+        dest: /tmp
+        src: "https://github.com/traefik/traefik/releases/download/{{ _traefik_version }}/traefik_{{ _traefik_version }}_linux_amd64.tar.gz"
+        remote_src: true
+        list_files: false
+        keep_newer: false
+        mode: 0640
+
+    - name: Copy binary to install location
+      ansible.builtin.copy:
+        dest: "{{ traefik_bin_path }}"
+        src: /tmp/traefik
+        remote_src: true
+        force: true
+        owner: root
+        group: root
+        mode: 0755
+      notify: traefik_restart

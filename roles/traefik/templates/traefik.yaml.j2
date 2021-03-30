@@ -1,0 +1,78 @@
+---
+### {{ ansible_managed }}
+entryPoints:
+  web:
+    address: :80
+  {% if traefik_enable_https %}
+    {% if traefik_enable_https_redirect %}
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+    {% endif %}
+  websecure:
+    address: :443
+    http:
+      tls:
+        {% if traefik_acme_enable | bool %}
+        certResolver: letsEncrypt
+        domains: {{ traefik_acme_domains }}
+        {% endif %}
+      middlewares:
+        - default-security@file
+
+# Enable ACME (Let's Encrypt): automatic SSL
+certificatesResolvers:
+  letsEncrypt:
+    acme:
+      email: {{ traefik_acme_email }}
+      storage: {{ traefik_acme_storage_file }}
+      {% if traefik_acme_staging %}
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      {% endif %}
+      {# ACME Challenges #}
+      {% if traefik_acme_challenge == 'dns' %}
+      dnsChallenge:
+        provider: {{ traefik_acme_dns_provider }}
+        delayBeforeCheck: 10
+        disablepropagationcheck: {{ traefik_acme_dns_disablepropagationcheck }}
+      {% elif traefik_acme_challenge == 'tls' %}
+      tlsChallenge: {}
+      {% elif traefik_acme_challenge == 'http' %}
+      httpChallenge:
+        entryPoint: web
+      {% endif %}
+  {% endif %}
+
+# Active config providers
+providers:
+  {% if traefik_provider_docker %}
+  # Docker configuration backend
+  docker:
+    {% if traefik_provider_docker_defaultrule %}
+    defaultRule: {{ traefik_provider_docker_defaultrule }}
+    {% elif traefik_host_domainname %}
+    defaultRule: "Host(`{{ '{{ normalize .Name }}' }}.{{ traefik_host_domainname }}`)"
+    {% endif %}
+    exposedByDefault: {{ traefik_provider_docker_exposebydefault }}
+    {% if traefik_provider_docker_endpoint %}
+    endpoint: {{ traefik_provider_docker_endpoint }}
+    {% endif %}
+  {% endif %}
+
+  # File configuration backend
+  file:
+    directory: {{ traefik_configdir_dynamic }}
+    watch: true
+
+# API and dashboard configuration
+api:
+  insecure: false
+  dashboard: {{ traefik_dashboard_enable }}
+
+# Logs configuration
+log:
+  level: {{ traefik_log_level }}
+  format: {{ traefik_log_format }}
+  filePath: {{ traefik_log_filepath }}

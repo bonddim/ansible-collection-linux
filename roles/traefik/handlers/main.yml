@@ -1,0 +1,10 @@
+---
+# handlers file for traefik role
+- name: Restart traefik service
+  ansible.builtin.systemd:
+    name: traefik.service
+    state: restarted
+    enabled: true
+    daemon_reload: "{{ _traefik_service_file.changed }}"
+  listen: traefik_restart
+  when: traefik_install_method == 'binary'

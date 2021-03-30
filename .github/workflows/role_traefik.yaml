@@ -1,0 +1,50 @@
+---
+name: traefik
+
+on:
+  push:
+    paths:
+      - 'roles/traefik/**'
+      - 'molecule/traefik/**'
+      - '.github/workflows/role_traefik.yaml'
+  pull_request:
+    paths:
+      - 'roles/traefik/**'
+      - 'molecule/traefik/**'
+      - '.github/workflows/role_traefik.yaml'
+
+env:
+  NAMESPACE: bonddim
+  COLLECTION: linux
+
+jobs:
+  molecule:
+    # skip job on pull requests from base repository
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ansible:
+          - stable-2.9
+          - stable-2.10
+          - devel
+        install_method:
+          - binary
+          - docker
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - uses: bonddim/action-lxd-init@stable
+      - run: python3 -m pip install tox
+      - run: tox -e ${{ matrix.ansible }} -- ${{ github.workflow }}
+        working-directory: ./ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+        env:
+          INSTALL_METHOD: ${{ matrix.install_method }}
+          ANSIBLE_FORCE_COLOR: true
+          PY_COLORS: '1'
