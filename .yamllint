@@ -1,0 +1,14 @@
+---
+# Based on ansible-lint config
+extends: default
+
+rules:
+  braces: {max-spaces-inside: 1, level: error}
+  brackets: {max-spaces-inside: 1, level: error}
+  colons: {max-spaces-after: 1, level: error}
+  commas: {max-spaces-after: 1, level: error}
+  comments-indentation: disable
+  empty-lines: {level: error}
+  hyphens: {level: error}
+  line-length: {max: 160}
+  truthy: enable

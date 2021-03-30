@@ -1,0 +1,8 @@
+---
+exclude_paths:
+  - .github
+  - molecule
+skip_list:
+  - meta-no-info
+parseable: true
+verbosity: 2
