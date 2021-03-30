@@ -1,0 +1,14 @@
+---
+# docker tasks for RedHat OS family
+- name: Add docker GPG key
+  ansible.builtin.rpm_key:
+    key: "{{ docker_base_url }}/gpg"
+    state: present
+
+- name: Add docker repository
+  ansible.builtin.get_url:
+    url: "{{ docker_repository }}"
+    dest: "/etc/yum.repos.d/{{ docker_repository | basename }}"
+    owner: root
+    group: root
+    mode: 0644

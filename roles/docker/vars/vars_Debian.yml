@@ -1,0 +1,15 @@
+---
+# docker vars for Debian OS family
+docker_repository: "deb [arch={{ docker_system_arch }}] {{ docker_base_url }} {{ ansible_distribution_release }} stable"
+docker_deprecated_packages:
+  - docker
+  - docker-engine
+  - docker.io
+  - containerd
+  - runc
+docker_required_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg-agent
+  - software-properties-common

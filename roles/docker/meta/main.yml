@@ -1,0 +1,26 @@
+---
+dependencies: []
+
+galaxy_info:
+  description: "Install Docker Engine on Linux"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - bionic
+        - xenial
+    - name: Debian
+      versions:
+        - buster
+        - stretch
+    - name: EL
+      versions:
+        - 8
+        - 7
+    - name: Fedora
+      versions:
+        - 33
+        - 32
+        - 31
+        - 30
+  galaxy_tags: []

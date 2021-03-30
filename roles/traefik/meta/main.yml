@@ -2,15 +2,7 @@
 dependencies: []
 
 galaxy_info:
-  author: Dmytro Bondar
-  license: "license (MIT)"
-  namespace: bonddim
-  role_name: traefik
   description: "Deploy traefik v2 with TLS support"
-  github_branch: main
-
-  min_ansible_version: 2.9
-
   platforms:
     - name: Ubuntu
       versions:
@@ -24,14 +16,4 @@ galaxy_info:
     - name: Fedora
       versions:
         - all
-
-  galaxy_tags:
-    - traefik
-    - loadbalancer
-    - proxy
-    - reverseproxy
-    - letsencrypt
-    - system
-    - web
-    - networking
-    - cloud
+  galaxy_tags: []

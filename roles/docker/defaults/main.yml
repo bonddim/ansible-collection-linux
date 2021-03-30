@@ -1,0 +1,12 @@
+---
+# defaults file for docker role
+docker_system_arch: amd64
+docker_daemon_state: started
+docker_daemon_enable: true
+
+docker_users: []
+
+# docker-compose
+docker_compose_install: false
+docker_compose_install_path: /usr/local/bin/docker-compose
+docker_compose_version: latest

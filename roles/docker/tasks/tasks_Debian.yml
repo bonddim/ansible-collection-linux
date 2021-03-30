@@ -1,0 +1,18 @@
+---
+# docker tasks for Debian OS family
+- name: Install docker required packages
+  ansible.builtin.apt:
+    name: "{{ docker_required_packages }}"
+    state: present
+    update_cache: true
+
+- name: Add docker GPG key
+  ansible.builtin.apt_key:
+    url: "{{ docker_base_url }}/gpg"
+    state: present
+
+- name: Add docker repository
+  ansible.builtin.apt_repository:
+    repo: "{{ docker_repository }}"
+    state: present
+    mode: 0644

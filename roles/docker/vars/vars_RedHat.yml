@@ -1,0 +1,12 @@
+---
+# docker vars for RedHat OS family
+docker_repository: "{{ docker_base_url }}/docker-ce.repo"
+docker_deprecated_packages:
+      - docker
+      - docker-client
+      - docker-client-latest
+      - docker-common
+      - docker-latest
+      - docker-latest-logrotate
+      - docker-logrotate
+      - docker-engine

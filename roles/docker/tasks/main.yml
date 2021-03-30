@@ -1,0 +1,35 @@
+---
+# tasks file for docker role
+- name: Include vars for target host OS
+  ansible.builtin.include_vars: "vars_{{ ansible_os_family }}.yml"
+
+- name: Remove docker deprecated packages
+  ansible.builtin.package:
+    name: "{{ docker_deprecated_packages }}"
+    state: absent
+    purge: "{{ (ansible_os_family == 'Debian') | ternary(true, omit) }}"
+
+- name: Include tasks for target host OS
+  ansible.builtin.include_tasks: "tasks_{{ ansible_os_family }}.yml"
+
+- name: Install docker packages
+  ansible.builtin.package:
+    name: "{{ docker_packages }}"
+    state: present
+
+- name: Ensure docker daemon state
+  ansible.builtin.systemd:
+    name: docker.service
+    state: "{{ docker_daemon_state }}"
+    enabled: "{{ docker_daemon_enable }}"
+
+- name: Add user(s) to docker group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: docker
+    append: true
+  loop: "{{ docker_users }}"
+
+- name:
+  ansible.builtin.include_tasks: compose.yml
+  when: docker_compose_install | bool

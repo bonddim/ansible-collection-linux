@@ -1,0 +1,58 @@
+---
+name: docker
+
+on:
+  push:
+    paths:
+      - 'roles/docker/**'
+      - 'molecule/docker/**'
+      - '.github/workflows/docker.yml'
+  pull_request:
+    paths:
+      - 'roles/docker/**'
+      - 'molecule/docker/**'
+      - '.github/workflows/docker.yml'
+
+env:
+  NAMESPACE: bonddim
+  COLLECTION: linux
+
+jobs:
+  molecule:
+    # skip job on pull requests from base repository
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ansible:
+          - stable-2.10
+        distro:
+          - ubuntu/20.04
+          - debian/10
+          - debian/9
+          - fedora/32
+          - fedora/33
+          - centos/7
+          - centos/8
+        include:
+          - ansible: stable-2.9
+            distro: ubuntu/18.04
+          - ansible: devel
+            distro: ubuntu/20.04
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - uses: bonddim/action-lxd-init@stable
+      - run: python3 -m pip install tox
+      - run: tox -e ${{ matrix.ansible }} -- ${{ github.workflow }}
+        working-directory: ./ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+        env:
+          MOLECULE_DISTRO: ${{ matrix.distro }}
+          ANSIBLE_FORCE_COLOR: true
+          PY_COLORS: '1'

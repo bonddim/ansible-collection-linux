@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  vars:
+    docker_compose_install: true
+  roles:
+    - bonddim.linux.docker

@@ -1,0 +1,27 @@
+---
+- name: Check current docker-compose version
+  ansible.builtin.command: docker-compose --version
+  register: compose_current_version
+  changed_when: false
+  failed_when: false
+
+- when: docker_compose_version == "latest"
+  block:
+    - name: Check latest docker-compose version
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/docker/compose/releases/latest
+        method: GET
+        headers:
+          Accept: application/vnd.github.v3+json
+      register: compose_latest_version
+
+    - name: Set docker-compose version number
+      ansible.builtin.set_fact:
+        docker_compose_version: "{{ compose_latest_version.json.tag_name }}"
+
+- name: Install docker-compose binary
+  ansible.builtin.get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
+    dest: "{{ docker_compose_install_path }}"
+    force: "{{ (docker_compose_version not in compose_current_version.stdout | default('')) | ternary(true, false) }}"
+    mode: 0755
