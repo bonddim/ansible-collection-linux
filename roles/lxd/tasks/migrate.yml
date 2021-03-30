@@ -1,0 +1,22 @@
+---
+- name: Run lxd.migrate
+  ansible.builtin.command: lxd.migrate -yes
+  args:
+    removes: /var/lib/lxd/unix.socket
+  register: lxd_migrate
+
+- name: Move existing client configurations
+  ansible.builtin.shell: mkdir -p $HOME/snap/lxd/current/.config && mv $HOME/.config/lxc $HOME/snap/lxd/current/.config
+  args:
+    removes: ~/.config/lxc
+    warn: false
+  become: true
+  become_user: "{{ item }}"
+  loop: "{{ lxd_users }}"
+
+- name: Replace lxd mountpoint in fstab if exists
+  ansible.builtin.replace:
+    path: /etc/fstab
+    regexp: '/var/lib/lxd'
+    replace: '/var/snap/lxd'
+  when: "'mountpoint' in lxd_migrate.stdout|default('')"

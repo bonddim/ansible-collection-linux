@@ -1,0 +1,34 @@
+---
+# tasks file for bonddim.lxd role
+- name: Check if legacy socket path exists
+  ansible.builtin.stat:
+    path: /var/lib/lxd/unix.socket
+  register: legacy_socket
+  tags: lxd, lxd-migrate
+
+- name: Run migration tasks
+  ansible.builtin.include_tasks: migrate.yml
+  when:
+    - ansible_distribution == "Ubuntu"
+    - legacy_socket.stat.exists|bool
+  tags: lxd, lxd-migrate
+
+- name: Start lxd daemon
+  ansible.builtin.systemd:
+    name: snap.lxd.daemon
+    state: started
+  tags: lxd, lxd-init
+
+- name: Initialize lxd in auto mode
+  ansible.builtin.command: /snap/bin/lxd init --auto
+  args:
+    creates: /var/snap/lxd/common/lxd/storage-pools/default
+  tags: lxd, lxd-init
+
+- name: Add users to lxd group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: lxd
+    append: true
+  loop: "{{ lxd_users }}"
+  tags: lxd, lxd-users

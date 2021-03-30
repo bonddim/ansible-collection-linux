@@ -1,0 +1,3 @@
+---
+# defaults file for lxd role
+lxd_users: []

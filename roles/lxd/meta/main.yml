@@ -1,0 +1,24 @@
+---
+dependencies:
+  - role: bonddim.linux.snapd
+    snap_packages:
+      - lxd
+
+galaxy_info:
+  description: Install LXD daemon from Snapcraft. Migrate legacy LXD on Ubuntu < 20.04
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - buster
+        - stretch
+    - name: EL
+      versions:
+        - 8
+        - 7
+    - name: Fedora
+      versions:
+        - all
+  galaxy_tags: []
