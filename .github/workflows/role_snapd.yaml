@@ -48,8 +48,7 @@ jobs:
         with:
           python-version: '3.x'
       - uses: bonddim/action-lxd-init@stable
-      - name: Install dependencies
-        run: python3 -m pip install tox
+      - run: python3 -m pip install tox
       - run: tox -e ${{ matrix.ansible }} -- ${{ github.workflow }}
         working-directory: ./ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
         env:
