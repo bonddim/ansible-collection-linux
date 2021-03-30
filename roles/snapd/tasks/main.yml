@@ -27,7 +27,7 @@
   tags: snap, snap-install
 
 - name: Enable and start snapd socket
-  ansible.builtin.service:
+  ansible.builtin.systemd:
     name: snapd.socket
     state: started
     enabled: true
