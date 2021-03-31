@@ -6,12 +6,12 @@ on:
     paths:
       - 'roles/docker/**'
       - 'molecule/docker/**'
-      - '.github/workflows/docker.yml'
+      - '.github/workflows/role_docker.yaml'
   pull_request:
     paths:
       - 'roles/docker/**'
       - 'molecule/docker/**'
-      - '.github/workflows/docker.yml'
+      - '.github/workflows/role_docker.yaml'
 
 env:
   NAMESPACE: bonddim
