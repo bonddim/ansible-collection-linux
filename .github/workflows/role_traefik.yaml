@@ -12,6 +12,8 @@ on:
       - 'roles/traefik/**'
       - 'molecule/traefik/**'
       - '.github/workflows/role_traefik.yaml'
+  schedule:
+    - cron: '0 4 * * *'
 
 env:
   NAMESPACE: bonddim
