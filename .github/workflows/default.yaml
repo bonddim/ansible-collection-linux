@@ -10,13 +10,12 @@ env:
   NAMESPACE: bonddim
   COLLECTION_NAME: linux
 
-defaults:
-  run:
-    working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
-
 jobs:
   sanity:  # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -30,6 +29,9 @@ jobs:
 
   roles:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
     strategy:
       fail-fast: false
       matrix:
