@@ -1,13 +1,6 @@
 # Ansible Role: traefik
 
-[![Ansible Role](https://img.shields.io/ansible/role/51648?label=galaxy&logo=ansible)](https://galaxy.ansible.com/bonddim/traefik)
-[![Ansible Role Downloads](https://img.shields.io/ansible/role/d/51648?logo=ansible)](https://galaxy.ansible.com/bonddim/traefik)
-[![Ansible Quality Score](https://img.shields.io/ansible/quality/51648?logo=ansible)](https://galaxy.ansible.com/bonddim/traefik)
-[![Workflow](https://img.shields.io/github/workflow/status/bonddim/ansible-role-traefik/Molecule?logo=github)](https://github.com/bonddim/ansible-role-traefik/actions)
-[![License](https://img.shields.io/github/license/bonddim/ansible-role-traefik)](https://github.com/bonddim/ansible-role-traefik/blob/main/LICENSE)
-
-
-Deploy and configure [Traefik v2](https://doc.traefik.io/traefik/)
+Deploy and configure [Traefik v2](https://doc.traefik.io/traefik/) with TLS support
 
 Clean role execution will give you:
   - running traefik instance on 80 port
@@ -15,10 +8,10 @@ Clean role execution will give you:
   - security options for https with **A+** rate on [SSL Labs](https://www.ssllabs.com/ssltest/analyze.htm)
 
 ## Requirements
-Docker daemon and Docker SDK for Python is required on target host if **docker** install method selected (see [variables](#role-variables) section)
+Docker daemon and Docker SDK for Python is required on target host if **docker** install method selected (see Role variables section below)
 
 ## Role Variables
-Variables with default values from [defaults/main.yml](https://github.com/bonddim/ansible-role-traefik/blob/main/defaults/main.yml)
+Variables with default values from [defaults/main.yml](https://github.com/bonddim/ansible-collection-linux/blob/main/roles/traefik/defaults/main.yml)
 ```yaml
 # Common vars
 traefik_version: latest  # version to install, ex. v2.3.4
@@ -66,7 +59,7 @@ traefik_provider_docker_endpoint: ""  # default docker endpoint unix:///var/run/
 # Custom dynamic config
 traefik_custom_config: {}  # Refer to traefik docs https://doc.traefik.io/traefik/reference/dynamic-configuration/file
 ```
-Variables with default values from [vars/main.yml](https://github.com/bonddim/ansible-role-traefik/blob/main/vars/main.yml)
+Variables with default values from [vars/main.yml](https://github.com/bonddim/ansible-collection-linux/blob/main/roles/traefik/vars/main.yml)
 
 These are the preferred values, use extra-vars to override ([ansible docs](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable))
 ```yaml
@@ -85,7 +78,7 @@ traefik_acme_storage_file: '{{ traefik_home }}/acme.json'
 - name: minimal setup with http
   hosts: all
   roles:
-    - bonddim.traefik
+    - bonddim.linux.traefik
 
 - name: deploy traefik container and enable docker provider
   hosts: all
@@ -93,7 +86,7 @@ traefik_acme_storage_file: '{{ traefik_home }}/acme.json'
     traefik_install_method: docker
     traefik_provider_docker: true
   roles:
-    - bonddim.traefik
+    - bonddim.linux.traefik
 
 - name: enable docker provider with tcp endpoint to docker socket
   hosts: all
@@ -101,7 +94,7 @@ traefik_acme_storage_file: '{{ traefik_home }}/acme.json'
     traefik_provider_docker: true
     traefik_provider_docker_endpoint: "tcp://host:port"
   roles:
-    - bonddim.traefik
+    - bonddim.linux.traefik
 
 - name: minimal setup with https
   hosts: all
@@ -113,12 +106,6 @@ traefik_acme_storage_file: '{{ traefik_home }}/acme.json'
     traefik_env:
       DUCKDNS_TOKEN: "duckdns_token_value"
   roles:
-    - bonddim.traefik
+    - bonddim.linux.traefik
 ```
 See my [home-server](https://github.com/bonddim/home-server) playbooks for real use examples
-
-## License
-MIT
-
-## Author Information
-[Dmytro Bondar](https://github.com/bonddim)

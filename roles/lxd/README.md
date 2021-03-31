@@ -1,8 +1,7 @@
 # Ansible Role: bonddim.linux.lxd
 
-## Features
-* Install latest version of LXD from [Snapcraft](https://snapcraft.io/store)
-* Migrate existing LXD configuration on Ubuntu systems
+Install latest version of LXD from [Snapcraft](https://snapcraft.io/store)<br>
+Migrate existing LXD configuration on Ubuntu systems
 
 ## Supported platforms
 * Ubuntu
@@ -10,10 +9,8 @@
 * Centos
 * Fedora
 
-Check list of tested environments in [workflow](https://github.com/bonddim/ansible-role-lxd/blob/main/.github/workflows/molecule.yaml) file
-
 ## Dependencies
-From [meta/main.yaml](https://github.com/bonddim/ansible-role-lxd/blob/main/meta/main.yml)
+From [meta/main.yaml](https://github.com/bonddim/ansible-collection-linux/blob/main/roles/lxd/meta/main.yml)
 ```yaml
 dependencies:
   - role: bonddim.linux.snapd
@@ -22,7 +19,6 @@ dependencies:
 ```
 
 ## Role Variables
-Variables with default values from [defaults/main.yaml](https://github.com/bonddim/ansible-role-lxd/blob/main/defaults/main.yaml)
 ```yaml
 lxd_users: []  # list of users to add to lxd group
 ```
