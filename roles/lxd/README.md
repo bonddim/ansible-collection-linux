@@ -1,10 +1,4 @@
-# Ansible Role: lxd
-
-[![Ansible Role](https://img.shields.io/ansible/role/51734?label=galaxy&logo=ansible)](https://galaxy.ansible.com/bonddim/lxd)
-[![Ansible Role Downloads](https://img.shields.io/ansible/role/d/51734?logo=ansible)](https://galaxy.ansible.com/bonddim/lxd)
-[![Ansible Quality Score](https://img.shields.io/ansible/quality/51734?logo=ansible)](https://galaxy.ansible.com/bonddim/lxd)
-[![Workflow](https://img.shields.io/github/workflow/status/bonddim/ansible-role-lxd/Molecule?logo=github)](https://github.com/bonddim/ansible-role-lxd/actions)
-[![License](https://img.shields.io/github/license/bonddim/ansible-role-lxd)](https://github.com/bonddim/ansible-role-lxd/blob/main/LICENSE)
+# Ansible Role: bonddim.linux.lxd
 
 ## Features
 * Install latest version of LXD from [Snapcraft](https://snapcraft.io/store)
@@ -22,7 +16,7 @@ Check list of tested environments in [workflow](https://github.com/bonddim/ansib
 From [meta/main.yaml](https://github.com/bonddim/ansible-role-lxd/blob/main/meta/main.yml)
 ```yaml
 dependencies:
-  - role: bonddim.snapd
+  - role: bonddim.linux.snapd
     snap_packages:
       - lxd
 ```
@@ -37,14 +31,8 @@ lxd_users: []  # list of users to add to lxd group
 ```yaml
 - hosts: servers
   roles:
-    - role: bonddim.lxd
+    - role: bonddim.linux.lxd
       lxd_users:
         - user1
         - user2
 ```
-
-## License
-MIT
-
-## Author Information
-[Dmytro Bondar](https://github.com/bonddim)
