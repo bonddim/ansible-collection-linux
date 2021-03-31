@@ -17,6 +17,7 @@ jobs:
     defaults:
       run:
         working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -37,7 +38,7 @@ jobs:
       - name: Install ansible-base
         run: pip install ansible-base
       - name: Run sanity tests
-      - run: ansible-test sanity --docker -v --color
+        run: ansible-test sanity --docker -v --color
       - name: Build the collection
         run: ansible-galaxy collection build
       - name: Publish collection to Ansible Galaxy
