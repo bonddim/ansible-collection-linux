@@ -12,9 +12,6 @@ on:
       - 'roles/docker/**'
       - 'molecule/docker/**'
       - '.github/workflows/role_docker.yaml'
-  schedule:
-    - cron: '0 4 * * *'
-
 
 env:
   NAMESPACE: bonddim

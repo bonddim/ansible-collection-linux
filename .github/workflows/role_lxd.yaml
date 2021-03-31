@@ -12,8 +12,6 @@ on:
       - 'roles/lxd/**'
       - 'molecule/lxd/**'
       - '.github/workflows/role_lxd.yaml'
-  schedule:
-    - cron: '0 4 * * *'
 
 env:
   NAMESPACE: bonddim

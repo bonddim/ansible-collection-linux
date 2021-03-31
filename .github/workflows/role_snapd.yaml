@@ -12,8 +12,6 @@ on:
       - 'roles/snapd/**'
       - 'molecule/snapd/**'
       - '.github/workflows/role_snapd.yaml'
-  schedule:
-    - cron: '0 4 * * *'
 
 env:
   NAMESPACE: bonddim
