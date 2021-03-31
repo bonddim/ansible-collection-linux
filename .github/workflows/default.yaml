@@ -1,0 +1,57 @@
+---
+name: default
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *'
+
+env:
+  NAMESPACE: bonddim
+  COLLECTION_NAME: linux
+
+defaults:
+  run:
+    working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+
+jobs:
+  sanity:  # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - run: pip install ansible-base
+      - run: ansible-test sanity --docker -v --color
+
+
+  roles:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ansible:
+          - stable-2.9
+          - stable-2.10
+          - devel
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - uses: bonddim/action-lxd-init@stable
+      - name: Install test dependencies
+        run: python3 -m pip install -r requirements.txt https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
+      - name: Build and install the collection
+        run: |
+          ansible-galaxy collection build
+          ansible-galaxy collection install ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
+      - run: molecule test -s ${{ github.workflow }}
+        env:
+          ANSIBLE_FORCE_COLOR: true
+          PY_COLORS: '1'
