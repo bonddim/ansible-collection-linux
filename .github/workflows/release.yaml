@@ -1,0 +1,50 @@
+---
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  NAMESPACE: bonddim
+  COLLECTION: linux
+  GIT_TAG: "${GITHUB_REF##*/}"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+
+      - name: Update galaxy.yml (commit changes to main branch and update tag)
+        run: |
+          sed -Ei "s/^version: .*/version: ${{ env.GIT_TAG }}/" galaxy.yml
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -m "Bump version" galaxy.yml
+          git tag --force ${{ env.GIT_TAG }}
+          git push origin HEAD:main --force --follow-tags --tags
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - name: Install ansible-base
+        run: pip install ansible-base
+      - name: Run sanity tests
+      - run: ansible-test sanity --docker -v --color
+      - name: Build the collection
+        run: ansible-galaxy collection build
+      - name: Publish collection to Ansible Galaxy
+        run: ansible-galaxy collection publish --token ${{ secrets.GALAXY_TOKEN }} ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-${{ env.GIT_TAG }}.tar.gz
+
+      - uses: marvinpinto/action-automatic-releases@latest  # https://github.com/marketplace/actions/automatic-releases
+        with:
+          repo_token: '${{ secrets.GITHUB_TOKEN }}'
+          files: ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
+          prerelease: false
