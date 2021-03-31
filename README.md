@@ -3,7 +3,7 @@
 [![Galaxy version](https://img.shields.io/badge/dynamic/json?style=flat&label=galaxy&logo=ansible&url=https://galaxy.ansible.com/api/v2/collections/bonddim/linux/&query=latest_version.version)](https://galaxy.ansible.com/bonddim/linux)
 [![Licence](https://img.shields.io/github/license/bonddim/ansible-collection-linux?logo=license)](https://github.com/bonddim/ansible-collection-linux/blob/main/LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/bonddim/ansible-collection-linux?logo=github)](https://github.com/bonddim/ansible-collection-linux/commits/main)
-
+[![CI](https://img.shields.io/github/workflow/status/bonddim/ansible-collection-linux/default/main?logo=github)](https://github.com/bonddim/ansible-collection-linux/actions/workflows/default.yaml?query=branch%3Amain)
 
 ## Tested with Ansible
 Tested with the stable releases of Ansible 2.9 and 2.10 and the development version of Ansible
@@ -18,7 +18,8 @@ collections:
 
 
 ## Included content
-Roles
+### Roles
+
 | FQDN Name | Documentation | Build Status |
 | --------- | :-----------: | :----------: |
 | bonddim.linux.lxd | [Readme](https://github.com/bonddim/ansible-collection-linux/blob/main/roles/lxd/README.md) | [![](https://img.shields.io/github/workflow/status/bonddim/ansible-collection-linux/lxd/main?logo=github)](https://github.com/bonddim/ansible-collection-linux/actions/workflows/role_lxd.yaml?query=branch%3Amain) |
