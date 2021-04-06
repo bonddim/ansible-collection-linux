@@ -35,13 +35,15 @@
   ansible.builtin.set_fact:
     _traefik_version: "{{ (traefik_version == 'latest') | ternary(_traefik_release, traefik_version) }}"
 
+- name: Show traefik versions
+  ansible.builtin.debug:
+    msg: >-
+      Currently installed version: {{ _traefik_installed.stdout | default('none', true) }}.
+      Version to install: {{ _traefik_version | regex_replace('^v') }}
+
 - when: _traefik_version | regex_replace('^v') is version(_traefik_installed.stdout | default('0', true), '!=' )
   # run when the required traefik version and the installed one are different
   block:
-    - name: Show traefik version
-      ansible.builtin.debug:
-        msg: "Traefik version to install: {{ _traefik_version }}"
-
     - name: Download and extract archive
       ansible.builtin.unarchive:
         dest: /tmp
