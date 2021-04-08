@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Get existing getent databases
+      ansible.builtin.getent:
+        database: '{{ item }}'
+      loop:
+        - group
+        - passwd
+
+    - name: Check if home directory was created
+      stat:
+        path: /etc/ansible
+        get_checksum: false
+        get_mime: false
+        get_attributes: false
+      register: home
+
+    - name: Assert collected data
+      ansible.builtin.assert:
+        that:
+          - '"ansible" in getent_group'
+          - '"ansible" in getent_passwd'
+          - not home.stat.exists | bool

@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  roles:
+    - role: bonddim.linux.users
+      managed_users:
+        - name: ansible
+          system: true
+          home: /etc/ansible
+          create_home: false

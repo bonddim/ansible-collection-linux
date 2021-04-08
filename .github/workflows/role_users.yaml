@@ -1,0 +1,64 @@
+---
+name: users
+
+on:
+  push:
+    paths:
+      - 'roles/users/**'
+      - 'molecule/users/**'
+      - '.github/workflows/role_users.yaml'
+  pull_request:
+    paths:
+      - 'roles/users/**'
+      - 'molecule/users/**'
+      - '.github/workflows/role_users.yaml'
+
+env:
+  NAMESPACE: bonddim
+  COLLECTION: linux
+
+jobs:
+  molecule:
+    # skip job on pull requests from base repository
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+    strategy:
+      fail-fast: false
+      matrix:
+        ansible:
+          - stable-2.10
+        distro:
+          - ubuntu/20.04
+          - debian/10
+          - fedora/32
+          - fedora/33
+          - centos/7
+          - centos/8
+        include:
+          - ansible: stable-2.9
+            distro: ubuntu/18.04
+          - ansible: devel
+            distro: ubuntu/20.04
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - uses: bonddim/action-lxd-init@stable
+      - name: Install test dependencies
+        run: python3 -m pip install -r requirements.txt https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
+      - name: Build and install the collection
+        run: |
+          ansible-galaxy collection build
+          ansible-galaxy collection install ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
+      - run: molecule test -s ${{ github.workflow }}
+        env:
+          MOLECULE_DISTRO: ${{ matrix.distro }}
+          ANSIBLE_FORCE_COLOR: true
+          PY_COLORS: '1'

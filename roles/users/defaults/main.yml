@@ -1,0 +1,4 @@
+---
+# defaults file for users role
+managed_groups: []
+managed_users: []
