@@ -36,6 +36,7 @@ certificatesResolvers:
       {% if traefik_acme_challenge == 'dns' %}
       dnsChallenge:
         provider: {{ traefik_acme_dns_provider }}
+        resolvers: {{ traefik_acme_dns_resolvers | to_json }}
         delayBeforeCheck: 10
         disablepropagationcheck: {{ traefik_acme_dns_disablepropagationcheck | to_json }}
       {% elif traefik_acme_challenge == 'tls' %}
