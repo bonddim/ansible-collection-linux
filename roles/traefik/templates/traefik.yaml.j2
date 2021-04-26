@@ -17,7 +17,7 @@ entryPoints:
       tls:
         {% if traefik_acme_enable | bool %}
         certResolver: letsEncrypt
-        domains: {{ traefik_acme_domains }}
+        domains: {{ traefik_acme_domains | to_json }}
         {% endif %}
       middlewares:
         - default-compress@file
@@ -37,7 +37,7 @@ certificatesResolvers:
       dnsChallenge:
         provider: {{ traefik_acme_dns_provider }}
         delayBeforeCheck: 10
-        disablepropagationcheck: {{ traefik_acme_dns_disablepropagationcheck }}
+        disablepropagationcheck: {{ traefik_acme_dns_disablepropagationcheck | to_json }}
       {% elif traefik_acme_challenge == 'tls' %}
       tlsChallenge: {}
       {% elif traefik_acme_challenge == 'http' %}
@@ -56,7 +56,7 @@ providers:
     {% elif traefik_host_domainname %}
     defaultRule: "Host(`{{ '{{ normalize .Name }}' }}.{{ traefik_host_domainname }}`)"
     {% endif %}
-    exposedByDefault: {{ traefik_provider_docker_exposebydefault }}
+    exposedByDefault: {{ traefik_provider_docker_exposebydefault | to_json }}
     {% if traefik_provider_docker_endpoint %}
     endpoint: {{ traefik_provider_docker_endpoint }}
     {% endif %}
@@ -70,7 +70,7 @@ providers:
 # API and dashboard configuration
 api:
   insecure: false
-  dashboard: {{ traefik_dashboard_enable }}
+  dashboard: {{ traefik_dashboard_enable | to_json }}
 
 # Logs configuration
 log:
