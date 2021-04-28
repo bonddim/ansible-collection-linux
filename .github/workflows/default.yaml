@@ -53,7 +53,11 @@ jobs:
         run: |
           ansible-galaxy collection build
           ansible-galaxy collection install ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
-      - run: molecule test -s ${{ github.workflow }}
+      - name: Test all roles with molecule
+        run: |
+          for role in $(ls roles); do
+            molecule test -s $role
+          done
         env:
           ANSIBLE_FORCE_COLOR: true
           PY_COLORS: '1'

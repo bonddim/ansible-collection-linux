@@ -1,8 +1,0 @@
----
-- name: Converge
-  hosts: all
-  gather_facts: true
-  roles:
-    - bonddim.linux.lxd
-    - bonddim.linux.docker
-    - bonddim.linux.traefik
