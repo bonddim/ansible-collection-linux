@@ -25,9 +25,7 @@ jobs:
         run: echo "GIT_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
       - name: Change collection version to match tag
         run: |
-          if ! grep -w "${{ env.GIT_TAG }}" file &>/dev/null; then
-            sed -Ei "s/^version: .*/version: ${{ env.GIT_TAG }}/" galaxy.yml
-          fi
+          sed -Ei "s/^version: .*/version: ${{ env.GIT_TAG }}/" galaxy.yml
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
