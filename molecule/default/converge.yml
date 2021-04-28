@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: true
+  pre_tasks:
+  roles:
+  tasks:

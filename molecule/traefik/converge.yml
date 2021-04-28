@@ -4,7 +4,7 @@
   gather_facts: true
   become: true
   vars:
-    traefik_install_method: "{{ lookup('env', 'INSTALL_METHOD') }}"
+    traefik_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('binary', true) }}"
     traefik_provider_docker: "{{ (traefik_install_method == 'docker') | ternary(true, false) }}"
 
   pre_tasks:

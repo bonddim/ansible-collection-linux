@@ -16,7 +16,7 @@
       retries: 3
       delay: 5
 
-    - when: lookup('env', 'INSTALL_METHOD') == 'docker'
+    - when: lookup('env', 'INSTALL_METHOD') == 'docker' | default('binary', true)
       block:
         - name: Start whoami container
           community.docker.docker_container:
