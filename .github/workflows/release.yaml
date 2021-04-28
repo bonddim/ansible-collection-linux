@@ -2,11 +2,9 @@
 name: release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Collection version'
-        required: true
+  push:
+    tags:
+      - '*'
 
 env:
   NAMESPACE: bonddim
@@ -23,16 +21,13 @@ jobs:
       - uses: actions/checkout@v2
         with:
           path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
-
-      - name: Update galaxy.yml (commit changes to main branch and update tag)
-        run: |
-          sed -Ei "s/^version: .*/version: ${{ github.event.inputs.version }}/" galaxy.yml
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git commit -m "Release ${{ github.event.inputs.version }}" galaxy.yml
-          git tag ${{ github.event.inputs.version }}
-          git push origin HEAD:main --follow-tags --tags
-
+      - name: Create GIT_TAG environment variable
+        run: echo "GIT_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      - name: Change collection version to match tag
+      - run: |
+          if ! grep -w "${{ env.GIT_TAG }}" file &>/dev/null; then
+            sed -Ei "s/^version: .*/version: ${{ env.GIT_TAG }}/" galaxy.yml
+          fi
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
@@ -46,6 +41,5 @@ jobs:
       - uses: marvinpinto/action-automatic-releases@latest  # https://github.com/marketplace/actions/automatic-releases
         with:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          files: ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
-          automatic_release_tag: ${{ github.event.inputs.version }}
+          files: ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-${{ env.GIT_TAG }}.tar.gz
           prerelease: false
