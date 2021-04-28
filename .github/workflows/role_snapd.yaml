@@ -3,8 +3,6 @@ name: snapd
 
 on:
   push:
-    tags-ignore:
-      - '*'
     paths:
       - 'roles/snapd/**'
       - 'molecule/snapd/**'
