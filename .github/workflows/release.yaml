@@ -24,7 +24,7 @@ jobs:
       - name: Create GIT_TAG environment variable
         run: echo "GIT_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
       - name: Change collection version to match tag
-      - run: |
+        run: |
           if ! grep -w "${{ env.GIT_TAG }}" file &>/dev/null; then
             sed -Ei "s/^version: .*/version: ${{ env.GIT_TAG }}/" galaxy.yml
           fi
