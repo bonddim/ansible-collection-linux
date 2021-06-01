@@ -35,7 +35,7 @@ jobs:
           - stable-2.10
         distro:
           - ubuntu/20.04
-          - fedora/32
+          - fedora/34
           - fedora/33
           - centos/7
           - centos/8

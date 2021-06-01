@@ -36,7 +36,7 @@ jobs:
         distro:
           - ubuntu/20.04
           - debian/10
-          - fedora/32
+          - fedora/34
           - fedora/33
           - centos/7
           - centos/8

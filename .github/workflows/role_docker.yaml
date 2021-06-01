@@ -37,7 +37,7 @@ jobs:
           - ubuntu/20.04
           - debian/10
           - debian/9
-          - fedora/32
+          - fedora/34
           - fedora/33
           - centos/7
           - centos/8
