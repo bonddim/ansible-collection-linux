@@ -12,13 +12,11 @@ galaxy_info:
         - all
     - name: Debian
       versions:
-        - buster
-        - stretch
-    - name: EL
-      versions:
-        - 8
-        - 7
+        - all
     - name: Fedora
+      versions:
+        - all
+    - name: EL
       versions:
         - all
   galaxy_tags: []

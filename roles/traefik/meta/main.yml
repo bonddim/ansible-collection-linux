@@ -10,10 +10,10 @@ galaxy_info:
     - name: Debian
       versions:
         - all
-    - name: EL
+    - name: Fedora
       versions:
         - all
-    - name: Fedora
+    - name: EL
       versions:
         - all
   galaxy_tags: []

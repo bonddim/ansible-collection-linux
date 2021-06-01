@@ -11,11 +11,8 @@ galaxy_info:
         - all
     - name: Fedora
       versions:
-        - 31
-        - 32
-        - 33
+        - all
     - name: EL
       versions:
-        - 7
-        - 8
+        - all
   galaxy_tags: []

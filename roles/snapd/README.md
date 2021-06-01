@@ -5,7 +5,7 @@ Install snap core and packages from https://snapcraft.io/store
 ## Supported platforms
 * Debian based distributions
 * CentOS 7/8
-* Fedora 31/32/33
+* Fedora
 
 ## Role Variables
 ```yaml
