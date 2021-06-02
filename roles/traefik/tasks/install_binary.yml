@@ -44,6 +44,11 @@
 - when: _traefik_version | regex_replace('^v') is version(_traefik_installed.stdout | default('0', true), '!=' )
   # run when the required traefik version and the installed one are different
   block:
+    - name: Ensure that unzip package is installed
+      package:
+        name: unzip
+        state: present
+
     - name: Download and extract archive
       ansible.builtin.unarchive:
         dest: /tmp
