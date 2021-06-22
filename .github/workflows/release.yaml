@@ -2,9 +2,8 @@
 name: release
 
 on:
-  push:
-    tags:
-      - '*'
+  release:
+    types: ['published']
 
 env:
   NAMESPACE: bonddim
@@ -35,9 +34,3 @@ jobs:
         run: ansible-galaxy collection build
       - name: Publish collection to Ansible Galaxy
         run: ansible-galaxy collection publish --token ${{ secrets.GALAXY_TOKEN }} ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-${{ env.GIT_TAG }}.tar.gz
-
-      - uses: marvinpinto/action-automatic-releases@latest  # https://github.com/marketplace/actions/automatic-releases
-        with:
-          repo_token: '${{ secrets.GITHUB_TOKEN }}'
-          files: ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-${{ env.GIT_TAG }}.tar.gz
-          prerelease: false
