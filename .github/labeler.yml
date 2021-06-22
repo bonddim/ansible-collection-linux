@@ -1,0 +1,11 @@
+---
+ci:
+  - any: ['.github/workflows/*', 'molecule/**/*', 'requirements.txt', '*lint']
+documentation:
+  - '**/*.md'
+plugins:
+  - 'plugins/**/*'
+roles:
+  - 'roles/**/*'
+skip-changelog:
+  - '.github/*'
