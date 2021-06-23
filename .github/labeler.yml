@@ -1,6 +1,6 @@
 ---
 ci:
-  - any: ['.github/workflows/*', 'molecule/**/*', 'requirements.txt', '*lint']
+  - any: ['.github/workflows/role_*', 'molecule/**/*', 'requirements.txt', '*lint']
 documentation:
   - '**/*.md'
 plugins:
@@ -8,4 +8,4 @@ plugins:
 roles:
   - 'roles/**/*'
 skip-changelog:
-  - '.github/*'
+  - any: ['.github/*', '.github/workflows/gh_*']
