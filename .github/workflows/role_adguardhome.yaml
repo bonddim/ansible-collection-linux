@@ -1,0 +1,59 @@
+---
+name: adguardhome
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *'
+  push:
+    paths:
+      - 'roles/adguardhome/**'
+      - 'molecule/adguardhome/**'
+      - '.github/workflows/role_adguardhome.yaml'
+  pull_request:
+    paths:
+      - 'roles/adguardhome/**'
+      - 'molecule/adguardhome/**'
+      - '.github/workflows/role_adguardhome.yaml'
+
+env:
+  NAMESPACE: bonddim
+  COLLECTION: linux
+
+jobs:
+  molecule:
+    # skip job on pull requests from base repository and tag push
+    if: (github.event.pull_request.head.repo.full_name != github.repository) && !startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+    strategy:
+      fail-fast: false
+      matrix:
+        ansible:
+          - stable-2.9
+          - stable-2.10
+          - devel
+        install_method:
+          - docker
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - uses: bonddim/action-lxd-init@stable
+      - name: Install test dependencies
+        run: python3 -m pip install -r requirements.txt https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
+      - name: Build and install the collection
+        run: |
+          ansible-galaxy collection build
+          ansible-galaxy collection install ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
+      - run: molecule test -s ${{ github.workflow }}
+        env:
+          INSTALL_METHOD: ${{ matrix.install_method }}
+          ANSIBLE_FORCE_COLOR: true
+          PY_COLORS: '1'

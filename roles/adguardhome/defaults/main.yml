@@ -1,0 +1,20 @@
+---
+# defaults file for adguard role
+# Common vars
+adguardhome_home: /opt/adguardhome
+adguardhome_version: latest
+adguardhome_install_method: docker
+
+# Docker related vars
+adguardhome_docker_image: adguard/adguardhomWe
+adguardhome_docker_hosts:
+  - ['{{ ansible_fqdn }}', '{{ ansible_default_ipv4.address }}']
+adguardhome_docker_labels: {}
+adguardhome_docker_mounts:
+  - '{{ adguardhome_home }}/conf:/opt/adguardhome/conf'
+  - '{{ adguardhome_home }}/work:/opt/adguardhome/work'
+adguardhome_docker_network: bridge
+adguardhome_docker_ports:
+  - 53:53/tcp
+  - 53:53/udp
+  - 3000:3000/tcp

@@ -1,0 +1,11 @@
+---
+- name: Run pre-installation tasks
+  ansible.builtin.import_tasks: preinstall.yml
+  tags: adguard, adguard-preinstall
+
+- name: Run install method tasks
+  ansible.builtin.include_tasks:
+    file: "install_{{ adguardhome_install_method }}.yml"
+    apply:
+      tags: adguard, adguard-install
+  tags: adguard, adguard-install

@@ -1,0 +1,20 @@
+---
+- name: Check AdGuard Home docker network state
+  community.docker.docker_network:
+    name: '{{ adguardhome_docker_network }}'
+    state: present
+
+- name: Launch AdGuard Home container
+  community.docker.docker_container:
+    name: adguard
+    image: '{{ adguardhome_docker_image }}:{{ adguardhome_version }}'
+    pull: true
+    state: started
+    restart_policy: unless-stopped
+    security_opts: ['no-new-privileges:true']
+    etc_hosts: '{{ dict(adguardhome_docker_hosts) | default(omit) }}'
+    network_mode: '{{ adguardhome_docker_network }}'
+    published_ports: '{{ adguardhome_docker_ports | default(omit) }}'
+    volumes: '{{ adguardhome_docker_mounts }}'
+    container_default_behavior: "{{ (ansible_version.full is version('2.10', '>=')) | ternary('no_defaults', omit) }}"
+    labels: '{{ adguardhome_docker_labels | default(omit, true) }}'
