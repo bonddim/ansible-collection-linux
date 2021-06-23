@@ -32,12 +32,19 @@ jobs:
       fail-fast: false
       matrix:
         ansible:
-          - stable-2.9
           - stable-2.10
-          - devel
+        distro:
+          - ubuntu/20.04
+          - debian/10
+          - fedora/34
+          - centos/8
         install_method:
           - docker
-
+        include:
+          - ansible: devel
+            distro: ubuntu/20.04
+          - ansible: stable-2.9
+            distro: ubuntu/18.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -55,5 +62,6 @@ jobs:
       - run: molecule test -s ${{ github.workflow }}
         env:
           INSTALL_METHOD: ${{ matrix.install_method }}
+          MOLECULE_DISTRO: ${{ matrix.distro }}
           ANSIBLE_FORCE_COLOR: true
           PY_COLORS: '1'
