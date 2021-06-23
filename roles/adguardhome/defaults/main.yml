@@ -6,7 +6,7 @@ adguardhome_version: latest
 adguardhome_install_method: docker
 
 # Docker related vars
-adguardhome_docker_image: adguard/adguardhomWe
+adguardhome_docker_image: adguard/adguardhome
 adguardhome_docker_hosts:
   - ['{{ ansible_fqdn }}', '{{ ansible_default_ipv4.address }}']
 adguardhome_docker_labels: {}
