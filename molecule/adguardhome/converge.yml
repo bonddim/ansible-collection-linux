@@ -21,7 +21,9 @@
 
         - name: Install Docker SDK for Python
           ansible.builtin.pip:
-            name: docker
+            name:
+              - docker
+              - six
             state: present
 
   roles:
