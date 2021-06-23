@@ -13,11 +13,11 @@
 
 - when: ansible_service_mgr == 'systemd'
   block:
-  - name: Populate service facts
-    ansible.builtin.service_facts:
+    - name: Populate service facts
+      ansible.builtin.service_facts:
 
-  - name: Disable systemd-resolved DNSStubListener
-    ansible.builtin.include_tasks: resolved.yml
-    when:
-      - ansible_facts.services['systemd-resolved.service'] is defined
-      - ansible_facts.services['systemd-resolved.service'].status == 'enabled'
+    - name: Disable systemd-resolved DNSStubListener
+      ansible.builtin.include_tasks: resolved.yml
+      when:
+        - ansible_facts.services['systemd-resolved.service'] is defined
+        - ansible_facts.services['systemd-resolved.service'].status == 'enabled'
