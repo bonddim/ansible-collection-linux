@@ -22,7 +22,7 @@
         owner: root
         group: root
         mode: 0644
-      register: _resolved_config
+      notify: restart_resolved
 
     - name: Update /etc/resolv.conf symlink
       ansible.builtin.file:
@@ -30,9 +30,5 @@
         dest: /etc/resolv.conf
         state: link
 
-    - name: Restart systemd-resolved
-      ansible.builtin.systemd:
-        name: systemd-resolved.service
-        state: restarted
-      when: _resolved_config.changed
-      tags: skip_ansible_lint
+    - name: Flush handlers to restart systemd-resolved
+      meta: flush_handlers

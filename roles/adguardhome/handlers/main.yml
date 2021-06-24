@@ -1,0 +1,7 @@
+---
+# handlers file for adguard role
+- name: Restart systemd-resolved
+  ansible.builtin.systemd:
+    name: systemd-resolved.service
+    state: restarted
+  listen: restart_resolved
