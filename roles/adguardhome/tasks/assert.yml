@@ -1,0 +1,6 @@
+---
+- name: Check AdGuard Home version
+  ansible.builtin.assert:
+    that:
+      - adguardhome_version == 'latest' or adguardhome_version is match("v(\d+\.){2}\d+")
+    fail_msg: adguardhome_version should be 'latest' or in 'vX.Y.Z' format
