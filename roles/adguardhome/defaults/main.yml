@@ -3,7 +3,7 @@
 # Common vars
 adguardhome_home: /opt/adguardhome
 adguardhome_version: latest
-adguardhome_install_method: docker
+adguardhome_install_method: docker  # possible values docker, snap
 adguardhome_listen_all: true
 
 # Docker related vars
@@ -19,3 +19,6 @@ adguardhome_docker_ports:
   - 53:53/tcp
   - 53:53/udp
   - 3000:3000/tcp
+
+# Snap related vars
+adguardhome_snap_channel: latest/stable

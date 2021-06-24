@@ -9,3 +9,4 @@
   loop:
     - '{{ adguardhome_home }}/work'
     - '{{ adguardhome_home }}/conf'
+  when: adguardhome_install_method != 'snap'
