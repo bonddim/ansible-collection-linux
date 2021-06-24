@@ -32,7 +32,9 @@ jobs:
       fail-fast: false
       matrix:
         ansible:
+          - stable-2.9
           - stable-2.10
+          - devel
         distro:
           - ubuntu/20.04
           - debian/10
@@ -40,14 +42,12 @@ jobs:
           - centos/8
         install_method:
           - binary
-          - docker
-          - snap
         include:
           - ansible: devel
             distro: ubuntu/20.04
-            install_method: binary
-          - ansible: stable-2.9
-            distro: ubuntu/18.04
+            install_method: docker
+          - ansible: devel
+            distro: ubuntu/20.04
             install_method: snap
 
     steps:
