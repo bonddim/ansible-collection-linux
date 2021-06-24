@@ -4,7 +4,7 @@
   gather_facts: true
   become: true
   vars:
-    adguard_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('docker', true) }}"
+    adguardhome_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('docker', true) }}"
 
   pre_tasks:
     - name: Populate service facts
@@ -17,7 +17,7 @@
         - adguardhome_install_method == 'snap'
         - 'not "snapd.service" in ansible_facts.services'
 
-    - when: adguard_install_method == 'docker'
+    - when: adguardhome_install_method == 'docker'
       block:
         - name: Install Docker daemon
           ansible.builtin.include_role:
