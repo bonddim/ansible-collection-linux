@@ -29,9 +29,9 @@
 
 - when: _adguardhome_installed_version != _adguardhome_required_version
   block:
-    - name: Ensure that unzip package is installed
+    - name: Ensure that unarchive requirements are installed
       package:
-        name: unzip
+        name: unzip, tar
         state: present
 
     - name: Download and extract the archive
