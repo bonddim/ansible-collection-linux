@@ -7,12 +7,22 @@
     adguard_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('docker', true) }}"
 
   pre_tasks:
+    - name: Populate service facts
+      ansible.builtin.service_facts:
+
+    - name: Install snapd
+      ansible.builtin.include_role:
+        name: bonddim.linux.snapd
+      when:
+        - adguardhome_install_method == 'snap'
+        - 'not "snapd.service" in ansible_facts.services'
+
     - when: adguard_install_method == 'docker'
       block:
         - name: Install Docker daemon
           ansible.builtin.include_role:
             name: bonddim.linux.docker
-          when: not "docker0" in ansible_interfaces
+          when: 'not "docker.service" in ansible_facts.services'
 
         - name: Install pip package
           ansible.builtin.package:

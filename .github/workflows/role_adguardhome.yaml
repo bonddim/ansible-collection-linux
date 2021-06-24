@@ -45,6 +45,9 @@ jobs:
             distro: ubuntu/20.04
           - ansible: stable-2.9
             distro: ubuntu/18.04
+          - ansible: stable-2.10
+            distro: ubuntu/20.04
+            install_method: snap
     steps:
       - uses: actions/checkout@v2
         with:
