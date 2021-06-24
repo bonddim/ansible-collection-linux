@@ -1,10 +1,15 @@
 ---
 # defaults file for adguard role
 # Common vars
-adguardhome_home: /opt/adguardhome
+adguardhome_home: /opt/AdGuardHome
 adguardhome_version: latest
 adguardhome_install_method: docker  # possible values docker, snap
 adguardhome_listen_all: true
+
+# Binary relates vars
+adguardhome_system_arch: amd64  # possible values 386, amd64, arm64,armv5, armv6, armv7
+adguardhome_archive_name: 'AdGuardHome_linux_{{ adguardhome_system_arch }}.tar.gz'
+adguardhome_bin_path: '{{ adguardhome_home }}/AdGuardHome'
 
 # Docker related vars
 adguardhome_docker_image: adguard/adguardhome

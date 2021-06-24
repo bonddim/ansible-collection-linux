@@ -5,3 +5,9 @@
     name: systemd-resolved.service
     state: restarted
   listen: restart_resolved
+
+- name: Restart AdGuard Home service
+  ansible.builtin.service:
+    name: AdGuardHome.service
+    state: restarted
+  listen: restart_adguardhome

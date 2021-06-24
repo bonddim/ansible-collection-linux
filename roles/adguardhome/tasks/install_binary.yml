@@ -1,0 +1,51 @@
+---
+- name: Check installed version
+  ansible.builtin.shell:
+    executable: /bin/bash
+    cmd: set -o pipefail && {{ adguardhome_bin_path }} --version |  cut -d' ' -f4
+  register: _adguardhome_installed
+  changed_when: false
+  failed_when: false
+
+- name: Get AdGuard Home latest release
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/AdguardTeam/AdGuardHome/releases/latest
+    method: GET
+    headers:
+      Accept: application/vnd.github.v3+json
+  register: _adguardhome_release
+  when: adguardhome_version == 'latest'
+
+- name: Set AdGuard Home versions
+  ansible.builtin.set_fact:
+    _adguardhome_required_version: '{{ (adguardhome_version == "latest") | ternary(_adguardhome_release.json.tag_name, adguardhome_version) }}'
+    _adguardhome_installed_version: '{{ _adguardhome_installed.stdout | default("none", true) }}'
+
+- name: Show versions
+  ansible.builtin.debug:
+    msg: >-
+      Currently installed version: {{ _adguardhome_installed_version }}.
+      Version to install: {{ _adguardhome_required_version }}
+
+- when: _adguardhome_installed_version != _adguardhome_required_version
+  block:
+    - name: Ensure that unzip package is installed
+      package:
+        name: unzip
+        state: present
+
+    - name: Download and extract the archive
+      ansible.builtin.unarchive:
+        dest: /opt
+        src: 'https://github.com/AdguardTeam/AdGuardHome/releases/download/{{ _adguardhome_required_version }}/{{ adguardhome_archive_name }}'
+        remote_src: true
+        keep_newer: false
+        list_files: false
+        owner: root
+        group: root
+      notify: restart_adguardhome
+
+    - name: Install AdGuard Home service
+      ansible.builtin.command:
+        cmd: '{{ adguardhome_bin_path }} -s install'
+        creates: /etc/systemd/system/AdGuardHome.service

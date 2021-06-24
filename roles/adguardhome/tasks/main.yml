@@ -1,12 +1,11 @@
 ---
-- name: Run pre-installation tasks
+- name: Provide possibility to run on all interfaces
   ansible.builtin.import_tasks: preinstall.yml
+  when: adguardhome_listen_all
   tags: adguard, adguard-preinstall
 
-- name: Provide possibility to run on all interfaces
-  ansible.builtin.import_tasks: preconfig.yml
-  when: adguardhome_listen_all
-  tags: adguard, adguard-preconfig
+- name: Flush handlers to restart systemd-resolved
+  meta: flush_handlers
 
 - name: Run {{ adguardhome_install_method }} install method tasks
   ansible.builtin.include_tasks:

@@ -1,4 +1,13 @@
 ---
+- name: Create AdGuard Home mount directories
+  ansible.builtin.file:
+    path: '{{ item.split(":")[0] }}'
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop: '{{ adguardhome_docker_mounts }}'
+
 - name: Check AdGuard Home docker network state
   community.docker.docker_network:
     name: '{{ adguardhome_docker_network }}'
