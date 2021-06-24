@@ -4,6 +4,7 @@
 adguardhome_home: /opt/adguardhome
 adguardhome_version: latest
 adguardhome_install_method: docker
+adguardhome_listen_all: true
 
 # Docker related vars
 adguardhome_docker_image: adguard/adguardhome

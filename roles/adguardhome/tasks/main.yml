@@ -3,6 +3,11 @@
   ansible.builtin.import_tasks: preinstall.yml
   tags: adguard, adguard-preinstall
 
+- name: Provide possibility to run on all interfaces
+  ansible.builtin.import_tasks: preconfig.yml
+  when: adguardhome_listen_all
+  tags: adguard, adguard-preconfig
+
 - name: Run {{ adguardhome_install_method }} install method tasks
   ansible.builtin.include_tasks:
     file: "install_{{ adguardhome_install_method }}.yml"
