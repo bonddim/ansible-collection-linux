@@ -22,6 +22,7 @@ collections:
 
 | FQDN Name | Documentation | Build Status |
 | --------- | :-----------: | :----------: |
+| bonddim.linux.adguardhome | [Readme](https://github.com/bonddim/ansible-collection-linux/blob/main/roles/adguardhome/README.md) | [![](https://img.shields.io/github/workflow/status/bonddim/ansible-collection-linux/adguardhome/main?logo=github)](https://github.com/bonddim/ansible-collection-linux/actions/workflows/role_adguardhome.yaml?query=branch%3Amain) |
 | bonddim.linux.lxd | [Readme](https://github.com/bonddim/ansible-collection-linux/blob/main/roles/lxd/README.md) | [![](https://img.shields.io/github/workflow/status/bonddim/ansible-collection-linux/lxd/main?logo=github)](https://github.com/bonddim/ansible-collection-linux/actions/workflows/role_lxd.yaml?query=branch%3Amain) |
 | bonddim.linux.snapd | [Readme](https://github.com/bonddim/ansible-collection-linux/blob/main/roles/snapd/README.md) | [![](https://img.shields.io/github/workflow/status/bonddim/ansible-collection-linux/snapd/main?logo=github)](https://github.com/bonddim/ansible-collection-linux/actions/workflows/role_snapd.yaml?query=branch%3Amain) |
 | bonddim.linux.docker | [Readme](https://github.com/bonddim/ansible-collection-linux/blob/main/roles/docker/README.md) | [![](https://img.shields.io/github/workflow/status/bonddim/ansible-collection-linux/docker/main?logo=github)](https://github.com/bonddim/ansible-collection-linux/actions/workflows/role_docker.yaml?query=branch%3Amain) |
