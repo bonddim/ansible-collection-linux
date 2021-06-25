@@ -1,0 +1,58 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+
+  vars:
+    adguardhome_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('binary', true) }}"
+
+  tasks:
+    - name: Copy config file with configured upstream DNS servers
+      ansible.builtin.copy:
+        dest: >-
+          {{
+            '/opt/AdGuardHome/AdGuardHome.yaml' if adguardhome_install_method == 'binary' else
+            '/opt/AdGuardHome/conf/AdGuardHome.yaml' if adguardhome_install_method == 'docker' else
+            '/var/snap/adguard-home/current/AdGuardHome.yaml'
+          }}
+        src: AdGuardHome.yaml
+        mode: 0644
+      register: _adguardhome_config
+
+    - name: Restart AdGuard Home service
+      ansible.builtin.service:
+        name: >-
+          {{
+            'AdGuardHome.service' if adguardhome_install_method == 'binary' else
+            'snap.adguard-home.adguard-home.service'
+          }}
+        state: restarted
+      when:
+        - _adguardhome_config.changed
+        - adguardhome_install_method != 'docker'
+
+    - name: Restart AdGuard Home container
+      community.docker.docker_container:
+        name: adguard
+        state: restarted
+      when:
+        - _adguardhome_config.changed
+        - adguardhome_install_method == 'docker'
+
+    - name: GET 'dns_info' from AdGuard Home api with basic auth
+      ansible.builtin.uri:
+        url: http://127.0.0.1:3000/control/dns_info
+        method: GET
+        user: admin
+        password: admin
+        force_basic_auth: true
+      register: _request_dns
+      until: _request_dns.status == 200
+      retries: 3
+      delay: 5
+
+    - name: Assert response
+      ansible.builtin.assert:
+        that:
+          - _request_dns.json.upstream_dns[0] == 'tls://1.1.1.1'
+          - _request_dns.json.upstream_dns[1] == 'tls://dns.google.com'
