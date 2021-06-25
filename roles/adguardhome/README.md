@@ -1,4 +1,4 @@
-# Ansible Role: adguardhome
+# Ansible Role: bonddim.linux.adguardhome
 
 Install [AdGuard Home](https://adguard.com/en/adguard-home/overview.html)
 
