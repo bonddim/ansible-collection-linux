@@ -34,7 +34,8 @@
     - name: Restart AdGuard Home container
       community.docker.docker_container:
         name: adguard
-        state: restarted
+        restart: true
+        container_default_behavior: no_defaults
       when:
         - _adguardhome_config.changed
         - adguardhome_install_method == 'docker'
