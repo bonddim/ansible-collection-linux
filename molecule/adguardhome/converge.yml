@@ -4,7 +4,7 @@
   gather_facts: true
   become: true
   vars:
-    adguardhome_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('docker', true) }}"
+    adguardhome_install_method: "{{ lookup('env', 'INSTALL_METHOD') | default('binary', true) }}"
 
   pre_tasks:
     - name: Populate service facts

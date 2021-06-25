@@ -3,7 +3,7 @@
 # Common vars
 adguardhome_home: /opt/AdGuardHome
 adguardhome_version: latest
-adguardhome_install_method: docker  # possible values docker, snap
+adguardhome_install_method: binary  # possible values binary, docker, snap
 adguardhome_listen_all: true
 
 # Binary relates vars
