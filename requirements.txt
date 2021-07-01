@@ -1,3 +1,4 @@
+git+https://github.com/ansible/ansible@${ANSIBLE_VERSION}
 ansible-lint>=5.0.5<6.0
 molecule>=3.3.0
 molecule-lxd>=0.2
