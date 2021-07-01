@@ -41,8 +41,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
-          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
