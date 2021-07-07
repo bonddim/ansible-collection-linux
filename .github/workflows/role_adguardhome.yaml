@@ -25,23 +25,23 @@ jobs:
       fail-fast: false
       matrix:
         ansible:
-          - stable-2.9
           - stable-2.10
-          - devel
+          - stable-2.9
         distro:
-          - ubuntu/20.04
-          - debian/10
-          - fedora/34
-          - centos/8
+          - debian/10/cloud
+          - fedora/34/cloud
+          - fedora/33/cloud
+          - centos/8/cloud
+          - centos/7/cloud
         install_method:
           - binary
         include:
           - ansible: devel
-            distro: ubuntu/20.04
-            install_method: docker
-          - ansible: stable-2.10
-            distro: ubuntu/20.04
+            distro: ubuntu/20.04/cloud
             install_method: snap
+          - ansible: stable-2.9
+            distro: ubuntu/18.04/cloud
+            install_method: docker
 
     steps:
       - uses: actions/checkout@v2

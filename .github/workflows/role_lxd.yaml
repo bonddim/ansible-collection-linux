@@ -27,16 +27,15 @@ jobs:
         ansible:
           - stable-2.10
         distro:
-          - ubuntu/20.04
-          - fedora/34
-          - fedora/33
-          - centos/7
-          - centos/8
+          - fedora/34/cloud
+          - fedora/33/cloud
+          - centos/8/cloud
+          - centos/7/cloud
         include:
           - ansible: stable-2.9
-            distro: ubuntu/18.04
+            distro: ubuntu/18.04/cloud
           - ansible: devel
-            distro: ubuntu/20.04
+            distro: ubuntu/20.04/cloud
 
     steps:
       - uses: actions/checkout@v2
