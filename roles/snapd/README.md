@@ -6,6 +6,7 @@ Install snap core and packages from https://snapcraft.io/store
 * Debian based distributions
 * CentOS 7/8
 * Fedora
+* Amazon Linux 2
 
 ## Role Variables
 ```yaml
