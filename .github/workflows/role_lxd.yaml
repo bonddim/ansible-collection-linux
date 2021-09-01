@@ -43,6 +43,8 @@ jobs:
         ansible: ${{ fromJson(needs.matrix.outputs.ansible) }}
         distro: ${{ fromJson(needs.matrix.outputs.distro) }}
         include: ${{ fromJson(needs.matrix.outputs.include) }}
+        exclude:
+          - distro: debian/11/cloud
 
     steps:
       - uses: actions/checkout@v2
