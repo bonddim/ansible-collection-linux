@@ -25,7 +25,8 @@ jobs:
       include: ${{ steps.set-matrix.outputs.include }}
     steps:
       - uses: actions/checkout@v2
-      - id: set-matrix
+      - name: Set matrix outputs
+        id: set-matrix
         run: |
           echo "::set-output name=ansible::`jq -c .ansible .github/matrix.json`"
           echo "::set-output name=distro::`jq -c .distro .github/matrix.json`"
@@ -37,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: matrix
     strategy:
+      fail-fast: false
       matrix:
         ansible: ${{ fromJson(needs.matrix.outputs.ansible) }}
         distro: ${{ fromJson(needs.matrix.outputs.distro) }}
