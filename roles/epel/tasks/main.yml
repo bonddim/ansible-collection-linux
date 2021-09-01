@@ -4,7 +4,7 @@
     - ansible_os_family == 'RedHat'
     - ansible_distribution != 'Fedora'
   block:
-    - name: Install epel package on Amazon Linux 2
+    - name: Install epel package on Amazon Linux
       ansible.builtin.command: amazon-linux-extras install epel -y
       args:
         creates: /etc/yum.repos.d/epel.repo
