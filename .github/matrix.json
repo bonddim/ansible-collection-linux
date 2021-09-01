@@ -1,18 +1,15 @@
 {
-  "ansible": ["stable-2.10"],
+  "ansible": ["stable-2.9","stable-2.10"],
   "distro": [
+    "centos/7/cloud",
     "debian/11/cloud",
     "fedora/34/cloud",
     "ubuntu/20.04/cloud"
   ],
   "include": [
     {
-      "ansible": "stable-2.9",
-      "distro": "centos/7/cloud"
-    },
-    {
       "ansible": "devel",
-      "distro": "ubuntu/18.04/cloud"
+      "distro": "ubuntu/20.04/cloud"
     }
   ]
 }
