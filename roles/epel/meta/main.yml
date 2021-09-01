@@ -1,0 +1,9 @@
+---
+dependencies: []
+galaxy_info:
+  description: Install EPEL repository on RHEL based distributions
+  platforms:
+    - name: EL
+      versions:
+        - all
+  galaxy_tags: []
