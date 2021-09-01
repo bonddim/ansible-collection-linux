@@ -17,36 +17,39 @@ on:
       - '.github/workflows/role_adguardhome.yaml'
 
 jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      ansible: ${{ steps.set-matrix.outputs.ansible }}
+      distro: ${{ steps.set-matrix.outputs.distro }}
+      include: ${{ steps.set-matrix.outputs.include }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set matrix outputs
+        id: set-matrix
+        run: |
+          echo "::set-output name=ansible::`jq -c .ansible .github/matrix.json`"
+          echo "::set-output name=distro::`jq -c .distro .github/matrix.json`"
+          echo "::set-output name=include::`jq -c .include .github/matrix.json`"
+
   molecule:
     # skip job on pull requests from base repository and tag push
     if: (github.event.pull_request.head.repo.full_name != github.repository) && !startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
+    needs: matrix
     strategy:
       fail-fast: false
       matrix:
-        ansible:
-          - stable-2.10
-          - stable-2.9
-        distro:
-          - debian/10/cloud
-          - fedora/34/cloud
-          - fedora/33/cloud
-          - centos/8/cloud
-          - centos/7/cloud
-        install_method:
-          - binary
-        experimental:
-          - false
+        ansible: ${{ fromJson(needs.matrix.outputs.ansible) }}
+        distro: ${{ fromJson(needs.matrix.outputs.distro) }}
+        install_method: [binary]
         include:
           - ansible: devel
             distro: ubuntu/20.04/cloud
             install_method: snap
-            experimental: true
           - ansible: stable-2.9
             distro: ubuntu/18.04/cloud
             install_method: docker
-            experimental: false
 
     steps:
       - uses: actions/checkout@v2
