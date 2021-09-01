@@ -16,6 +16,9 @@ platforms:
       "security.privileged": "true"
 provisioner:
   name: ansible
+  config_options:
+    defaults:
+      verbosity: 2
   connection_options:
     ansible_lxd_remote: "${LXD_REMOTE:-local}"
 verifier:
