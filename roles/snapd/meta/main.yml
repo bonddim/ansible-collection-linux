@@ -1,6 +1,6 @@
 ---
 dependencies:
-  - { role: bonddim.linux.epel, when: ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora' }
+  - {role: bonddim.linux.epel, when: ansible_os_family == 'RedHat' and ansible_distribution != 'Fedora'}
 
 galaxy_info:
   description: 'Install snap core and snap packages from https://snapcraft.io/store'

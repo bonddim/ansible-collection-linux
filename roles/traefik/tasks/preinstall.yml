@@ -27,8 +27,8 @@
     access_time: preserve
     modification_time: preserve
   loop:
-    - { mode: "0755", state: directory, path: "{{ traefik_home }}" }
-    - { mode: "0755", state: directory, path: "{{ traefik_configdir_dynamic }}" }
-    - { mode: "0600", state: touch, path: "{{ traefik_acme_storage_file }}" }
+    - {mode: "0755", state: directory, path: "{{ traefik_home }}"}
+    - {mode: "0755", state: directory, path: "{{ traefik_configdir_dynamic }}"}
+    - {mode: "0600", state: touch, path: "{{ traefik_acme_storage_file }}"}
   loop_control:
     label: "{{ item.path }}"
