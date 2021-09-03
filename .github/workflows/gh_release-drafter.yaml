@@ -1,4 +1,4 @@
-name: release-drafter
+name: '!gh-release-drafter'
 
 on:
   push:

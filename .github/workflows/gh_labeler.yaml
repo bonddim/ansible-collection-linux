@@ -1,5 +1,5 @@
 ---
-name: labeler
+name: '!gh-pr-labeler'
 
 on:
   - pull_request_target
