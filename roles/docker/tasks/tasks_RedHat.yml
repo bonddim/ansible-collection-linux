@@ -1,14 +1,25 @@
 ---
 # docker tasks for RedHat OS family
+- name: Remove docker deprecated packages
+  ansible.builtin.package:
+    name: '{{ docker_deprecated_packages }}'
+    state: absent
+
 - name: Add docker GPG key
   ansible.builtin.rpm_key:
-    key: "{{ docker_base_url }}/gpg"
+    key: '{{ docker_base_url }}/gpg'
     state: present
 
 - name: Add docker repository
   ansible.builtin.get_url:
-    url: "{{ docker_repository }}"
-    dest: "/etc/yum.repos.d/{{ docker_repository | basename }}"
+    url: '{{ docker_repository }}'
+    dest: '/etc/yum.repos.d/{{ docker_repository | basename }}'
     owner: root
     group: root
     mode: 0644
+
+- name: Install docker packages
+  ansible.builtin.package:
+    name: '{{ docker_packages }}'
+    state: '{{ docker_package_state }}'
+    update_cache: true

@@ -1,12 +1,19 @@
 ---
 # docker vars for RedHat OS family
-docker_repository: "{{ docker_base_url }}/docker-ce.repo"
+docker_rpm_distro: >-
+  {%- if ansible_distribution == 'RedHat' %}rhel
+  {%- elif ansible_distribution == 'Fedora' %}fedora
+  {%- else %}centos
+  {%- endif %}
+
+docker_base_url: '{{ docker_download_url }}/{{ docker_rpm_distro }}'
+docker_repository: '{{ docker_base_url }}/docker-ce.repo'
 docker_deprecated_packages:
-      - docker
-      - docker-client
-      - docker-client-latest
-      - docker-common
-      - docker-latest
-      - docker-latest-logrotate
-      - docker-logrotate
-      - docker-engine
+  - docker
+  - docker-client
+  - docker-client-latest
+  - docker-common
+  - docker-latest
+  - docker-latest-logrotate
+  - docker-logrotate
+  - docker-engine

@@ -20,21 +20,12 @@ jobs:
   matrix:
     runs-on: ubuntu-latest
     outputs:
-      ansible: ${{ steps.set-matrix.outputs.ansible }}
-      distro: ${{ steps.set-matrix.outputs.distro }}
-      include: ${{ steps.set-matrix.outputs.include }}
-      exclude: ${{ steps.set-matrix.outputs.exclude }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v2
-      - name: Set matrix outputs
+      - name: Set build matrix
         id: set-matrix
-        run: |
-          include=$(jq -c .${{ github.workflow }}.include .github/matrix.json)
-          [[ "$include" == "null" ]] && include=$(jq -c .include .github/matrix.json)
-          echo "::set-output name=ansible::`jq -c .ansible .github/matrix.json`"
-          echo "::set-output name=distro::`jq -c .distro .github/matrix.json`"
-          echo "::set-output name=include::$include"
-          echo "::set-output name=exclude::`jq -c '.${{ github.workflow }}.exclude // []' .github/matrix.json`"
+        uses: bonddim/action-workflow-matrix@stable
 
   molecule:
     # skip job on pull requests from base repository and tag push
@@ -43,23 +34,8 @@ jobs:
     needs: matrix
     strategy:
       fail-fast: false
-      matrix:
-        ansible: ${{ fromJson(needs.matrix.outputs.ansible) }}
-        distro: ${{ fromJson(needs.matrix.outputs.distro) }}
-        include: ${{ fromJson(needs.matrix.outputs.include) }}
-        exclude: ${{ fromJson(needs.matrix.outputs.exclude) }}
-        install_method: [binary]
-
+      matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-      - uses: bonddim/action-lxd-init@stable
-      - uses: bonddim/action-ansible-molecule@stable
-        with:
-          molecule-command-args: --scenario-name ${{ github.workflow }}
-        env:
-          ANSIBLE_VERSION: ${{ matrix.ansible }}
-          MOLECULE_DISTRO: ${{ matrix.distro }}
-          INSTALL_METHOD: ${{ matrix.install_method }}
+      - name: Run molecule@local
+        uses: ./.github/workflows/molecule

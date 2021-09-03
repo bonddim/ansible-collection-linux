@@ -1,8 +1,6 @@
 ---
 # tasks file for epel role
-- when:
-    - ansible_os_family == 'RedHat'
-    - ansible_distribution != 'Fedora'
+- when: ansible_os_family in ['RedHat', 'Rocky'] and ansible_distribution != 'Fedora'
   block:
     - name: Install epel package on Amazon Linux
       ansible.builtin.command: amazon-linux-extras install epel -y

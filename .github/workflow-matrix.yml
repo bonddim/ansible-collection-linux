@@ -1,0 +1,46 @@
+---
+matrix: &default
+  ansible: [stable-2.10]
+  distro:
+    - almalinux/8/cloud
+    - amazonlinux
+    - centos/7/cloud
+    - debian/11/cloud
+    - fedora/34/cloud
+    - oracle/8/cloud
+    - ubuntu/20.04/cloud
+  include:
+    - ansible: devel
+      distro: rockylinux/8/cloud
+      experimental: true
+    - ansible: stable-2.9
+      distro: centos/7/cloud
+
+adguardhome:
+  matrix:
+    <<: *default
+    install_method: [binary]
+    include:
+      - ansible: devel
+        distro: rockylinux/8/cloud
+        install_method: docker
+        experimental: true
+      - ansible: stable-2.9
+        distro: ubuntu/18.04/cloud
+        install_method: snap
+
+lxd:
+  matrix:
+    <<: *default
+    exclude:
+      - distro: debian/11/cloud
+
+traefik:
+  matrix:
+    <<: *default
+    install_method: [binary]
+    include:
+      - ansible: devel
+        distro: rockylinux/8/cloud
+        install_method: docker
+        experimental: true

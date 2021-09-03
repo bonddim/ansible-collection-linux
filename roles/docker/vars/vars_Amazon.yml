@@ -1,0 +1,3 @@
+---
+# docker vars for Amazon distributions
+docker_packages: docker

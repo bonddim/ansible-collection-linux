@@ -2,7 +2,7 @@
 dependencies: []
 
 galaxy_info:
-  description: "Install Docker Engine on Linux"
+  description: 'Install Docker Engine on Linux'
   platforms:
     - name: Ubuntu
       versions:

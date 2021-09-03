@@ -1,35 +1,54 @@
 ---
 # tasks file for docker role
-- name: Include vars for target host OS
-  ansible.builtin.include_vars: "vars_{{ ansible_os_family }}.yml"
+- name: Set OS family for Rocky Linux on ansible < 2.11
+  ansible.builtin.set_fact:
+    ansible_os_family: 'RedHat'
+  when: ansible_os_family == 'Rocky'
+  tags: docker, docker-install
 
-- name: Remove docker deprecated packages
-  ansible.builtin.package:
-    name: "{{ docker_deprecated_packages }}"
-    state: absent
-    purge: "{{ (ansible_os_family == 'Debian') | ternary(true, omit) }}"
+- name: Include vars for target host OS
+  ansible.builtin.include_vars:
+    file: '{{ lookup("first_found", params) }}'
+  vars:
+    params:
+      files:
+        - 'vars_{{ ansible_distribution }}.yml'
+        - 'vars_{{ ansible_os_family }}.yml'
+      paths:
+        - 'vars'
+  tags: docker, docker-install
 
 - name: Include tasks for target host OS
-  ansible.builtin.include_tasks: "tasks_{{ ansible_os_family }}.yml"
-
-- name: Install docker packages
-  ansible.builtin.package:
-    name: "{{ docker_packages }}"
-    state: present
+  ansible.builtin.include_tasks:
+    file: '{{ lookup("first_found", params) }}'
+    apply:
+      tags: docker, docker-compose
+  vars:
+    params:
+      files:
+        - 'tasks_{{ ansible_distribution }}.yml'
+        - 'tasks_{{ ansible_os_family }}.yml'
+  tags: docker, docker-install
 
 - name: Ensure docker daemon state
   ansible.builtin.systemd:
     name: docker.service
-    state: "{{ docker_daemon_state }}"
-    enabled: "{{ docker_daemon_enable }}"
+    state: '{{ docker_daemon_state }}'
+    enabled: '{{ docker_daemon_enable }}'
+  tags: docker, docker-daemon
 
 - name: Add user(s) to docker group
   ansible.builtin.user:
-    name: "{{ item }}"
+    name: '{{ item }}'
     groups: docker
     append: true
-  loop: "{{ docker_users }}"
+  loop: '{{ docker_users }}'
+  tags: docker, docker-users
 
 - name: Install docker-compose
-  ansible.builtin.include_tasks: compose.yml
   when: docker_compose_install | bool
+  ansible.builtin.include_tasks:
+    file: compose.yml
+    apply:
+      tags: docker, docker-compose
+  tags: docker, docker-compose

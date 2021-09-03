@@ -1,0 +1,16 @@
+name: Molecule job template
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+    - uses: bonddim/action-lxd-init@stable
+    - uses: bonddim/action-ansible-molecule@stable
+      with:
+        molecule-command-args: --scenario-name ${{ github.workflow }}
+      env:
+        ANSIBLE_VERSION: ${{ matrix.ansible }}
+        MOLECULE_DISTRO: ${{ matrix.distro }}
+        INSTALL_METHOD: ${{ matrix.install_method }}

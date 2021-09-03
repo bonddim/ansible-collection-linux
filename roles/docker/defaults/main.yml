@@ -3,6 +3,7 @@
 docker_system_arch: amd64
 docker_daemon_state: started
 docker_daemon_enable: true
+docker_package_state: present
 
 docker_users: []
 

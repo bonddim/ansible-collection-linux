@@ -1,18 +1,30 @@
 ---
 # docker tasks for Debian OS family
+- name: Remove docker deprecated packages
+  ansible.builtin.package:
+    name: '{{ docker_deprecated_packages }}'
+    state: absent
+    purge: true
+
 - name: Install docker required packages
   ansible.builtin.apt:
-    name: "{{ docker_required_packages }}"
+    name: '{{ docker_required_packages }}'
     state: present
     update_cache: true
 
 - name: Add docker GPG key
   ansible.builtin.apt_key:
-    url: "{{ docker_base_url }}/gpg"
+    url: '{{ docker_base_url }}/gpg'
     state: present
 
 - name: Add docker repository
   ansible.builtin.apt_repository:
-    repo: "{{ docker_repository }}"
+    repo: '{{ docker_repository }}'
     state: present
     mode: 0644
+
+- name: Install docker packages
+  ansible.builtin.package:
+    name: '{{ docker_packages }}'
+    state: '{{ docker_package_state }}'
+    update_cache: true

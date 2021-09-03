@@ -1,0 +1,13 @@
+---
+- name: Install docker package on Amazon Linux
+  ansible.builtin.package:
+    name: '{{ docker_packages }}'
+    state: '{{ docker_package_state }}'
+    update_cache: true
+  when: ansible_distribution_major_version != '2'
+
+- name: Install docker package on Amazon Linux 2
+  ansible.builtin.command: amazon-linux-extras install {{ docker_packages }} -y
+  args:
+    creates: '{{ (docker_package_state == "present") | ternary("/usr/bin/docker", omit) }}'
+  when: ansible_distribution_major_version == '2'
