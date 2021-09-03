@@ -29,9 +29,11 @@ jobs:
       - name: Set matrix outputs
         id: set-matrix
         run: |
+          include=$(jq -c .${{ github.workflow }}.include .github/matrix.json)
+          [[ "$include" == "null" ]] && include=$(jq -c .include .github/matrix.json)
           echo "::set-output name=ansible::`jq -c .ansible .github/matrix.json`"
           echo "::set-output name=distro::`jq -c .distro .github/matrix.json`"
-          echo "::set-output name=include::`jq -c .include .github/matrix.json`"
+          echo "::set-output name=include::$include"
           echo "::set-output name=exclude::`jq -c '.${{ github.workflow }}.exclude // []' .github/matrix.json`"
 
   molecule:
