@@ -14,5 +14,19 @@
   ],
   "lxd": {
     "exclude": [{ "distro": "debian/11/cloud" }]
+  },
+  "adguardhome": {
+    "include": [
+      {
+        "ansible": "devel",
+        "distro": "ubuntu/20.04/cloud",
+        "install_method": "snap"
+      },
+      {
+        "ansible": "stable-2.9",
+        "distro": "ubuntu/18.04/cloud",
+        "install_method": "docker"
+      }
+    ]
   }
 }

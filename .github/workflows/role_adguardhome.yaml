@@ -23,14 +23,18 @@ jobs:
       ansible: ${{ steps.set-matrix.outputs.ansible }}
       distro: ${{ steps.set-matrix.outputs.distro }}
       include: ${{ steps.set-matrix.outputs.include }}
+      exclude: ${{ steps.set-matrix.outputs.exclude }}
     steps:
       - uses: actions/checkout@v2
       - name: Set matrix outputs
         id: set-matrix
         run: |
+          include=$(jq -c .${{ github.workflow }}.include .github/matrix.json)
+          [[ "$include" == "null" ]] && include=$(jq -c .include .github/matrix.json)
           echo "::set-output name=ansible::`jq -c .ansible .github/matrix.json`"
           echo "::set-output name=distro::`jq -c .distro .github/matrix.json`"
-          echo "::set-output name=include::`jq -c .include .github/matrix.json`"
+          echo "::set-output name=include::$include"
+          echo "::set-output name=exclude::`jq -c '.${{ github.workflow }}.exclude // []' .github/matrix.json`"
 
   molecule:
     # skip job on pull requests from base repository and tag push
@@ -42,14 +46,9 @@ jobs:
       matrix:
         ansible: ${{ fromJson(needs.matrix.outputs.ansible) }}
         distro: ${{ fromJson(needs.matrix.outputs.distro) }}
+        include: ${{ fromJson(needs.matrix.outputs.include) }}
+        exclude: ${{ fromJson(needs.matrix.outputs.exclude) }}
         install_method: [binary]
-        include:
-          - ansible: devel
-            distro: ubuntu/20.04/cloud
-            install_method: snap
-          - ansible: stable-2.9
-            distro: ubuntu/18.04/cloud
-            install_method: docker
 
     steps:
       - uses: actions/checkout@v2
