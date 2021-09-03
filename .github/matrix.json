@@ -28,5 +28,14 @@
         "install_method": "docker"
       }
     ]
+  },
+  "traefik": {
+    "include": [
+      {
+        "ansible": "devel",
+        "distro": "ubuntu/20.04/cloud",
+        "install_method": "docker"
+      }
+    ]
   }
 }
