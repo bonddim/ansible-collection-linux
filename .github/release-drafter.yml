@@ -9,8 +9,6 @@ categories:
     label: 'bug'
   - title: 'Documentation'
     label: 'documentation'
-  - title: 'Continuous Integration'
-    label: 'ci'  #0E8A16
   - title: 'Deprecations'
     label: 'deprecated'  #CFD3D7
 exclude-labels:
