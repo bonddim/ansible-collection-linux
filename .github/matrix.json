@@ -37,5 +37,13 @@
         "install_method": "docker"
       }
     ]
+  },
+  "snapd": {
+    "include": [
+      {
+        "ansible": "stable-2.10",
+        "distro": "amazonlinux/2.0.20210525.0"
+      }
+    ]
   }
 }
