@@ -40,6 +40,7 @@ jobs:
     # skip job on pull requests from base repository and tag push
     if: (github.event.pull_request.head.repo.full_name != github.repository) && !startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     needs: matrix
     strategy:
       fail-fast: false

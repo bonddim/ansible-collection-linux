@@ -5,9 +5,7 @@ Migrate existing LXD configuration on Ubuntu systems
 
 ## Supported platforms
 * Ubuntu
-* Debian (may require restart)
 * Centos
-* Fedora
 
 ## Dependencies
 From [meta/main.yaml](https://github.com/bonddim/ansible-collection-linux/blob/main/roles/lxd/meta/main.yml)

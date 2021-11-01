@@ -13,7 +13,10 @@
     }
   ],
   "lxd": {
-    "exclude": [{ "distro": "debian/11/cloud" }]
+    "exclude": [
+      { "distro": "debian/11/cloud" },
+      { "distro": "fedora/34/cloud" }
+    ]
   },
   "adguardhome": {
     "include": [
