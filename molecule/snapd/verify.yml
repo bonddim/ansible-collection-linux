@@ -3,14 +3,15 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Install hello-world snap
+    - name: Install PowerShell snap
       community.general.snap:
-        name: hello-world
+        name: powershell
+        classic: true
 
-    - name: Run hello-world snap
-      ansible.builtin.command: hello-world
-      register: snap_hello
+    - name: Run PowerShell snap
+      ansible.builtin.command: pwsh --version
+      register: pwsh
 
     - name: Verify command output
       ansible.builtin.assert:
-        that: "'Hello World!' in snap_hello.stdout"
+        that: "'PowerShell' in pwsh.stdout"
