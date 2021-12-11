@@ -28,7 +28,7 @@ jobs:
           - stable-2.10
         distro:
           - almalinux/8/cloud
-          - amazonlinux/2.0.20210525.0
+          - amazonlinux
           - oracle/8/cloud
         include:
           - ansible: stable-2.9
