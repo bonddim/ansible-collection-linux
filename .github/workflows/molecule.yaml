@@ -1,0 +1,43 @@
+---
+name: Molecule
+
+on:
+  workflow_call:
+    inputs:
+      scenario:
+        required: true
+        type: string
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set build matrix
+        id: set-matrix
+        uses: bonddim/action-workflow-matrix@stable
+        with:
+          workflow: ${{ inputs.scenario }}
+
+  molecule:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: matrix
+    continue-on-error: ${{ matrix.experimental || false }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - uses: bonddim/action-lxd-init@stable
+      - uses: bonddim/action-ansible-molecule@stable
+        with:
+          molecule-command-args: --scenario-name ${{ inputs.scenario }}
+        env:
+          ANSIBLE_VERSION: ${{ matrix.ansible }}
+          MOLECULE_DISTRO: ${{ matrix.distro }}
+          INSTALL_METHOD: ${{ matrix.install_method }}
