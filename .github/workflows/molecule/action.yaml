@@ -1,4 +1,6 @@
-name: Molecule job template
+---
+name: molecule
+description: molecule job template
 
 runs:
   using: composite
