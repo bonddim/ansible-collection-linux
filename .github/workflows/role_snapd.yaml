@@ -17,27 +17,9 @@ on:
       - '.github/workflows/role_snapd.yaml'
 
 jobs:
-  matrix:
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set build matrix
-        id: set-matrix
-        uses: bonddim/action-workflow-matrix@stable
-
   molecule:
     # skip job on pull requests from base repository and tag push
     if: (github.event.pull_request.head.repo.full_name != github.repository) && !startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    needs: matrix
-    continue-on-error: ${{ matrix.experimental || false }}
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run molecule@local
-        uses: ./.github/workflows/molecule
+    uses: ./.github/workflows/molecule.yaml
+    with:
+      scenario: ${{ github.workflow }}

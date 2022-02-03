@@ -1,5 +1,5 @@
 ---
-name: Molecule
+name: molecule
 
 on:
   workflow_call:
@@ -21,7 +21,7 @@ jobs:
         with:
           workflow: ${{ inputs.scenario }}
 
-  molecule:
+  test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: matrix
