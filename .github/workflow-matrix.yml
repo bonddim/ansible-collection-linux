@@ -34,6 +34,7 @@ lxd:
     <<: *default
     exclude:
       - distro: debian/11/cloud
+      - distro: fedora/34/cloud
 
 traefik:
   matrix:
