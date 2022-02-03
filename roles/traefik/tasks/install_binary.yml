@@ -46,7 +46,7 @@
   block:
     - name: Ensure that unzip package is installed
       package:
-        name: unzip
+        name: unzip, tar
         state: present
 
     - name: Download and extract archive
