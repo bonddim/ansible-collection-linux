@@ -35,10 +35,8 @@ jobs:
         with:
           python-version: '3.x'
       - uses: bonddim/action-lxd-init@stable
-      - name: Install tox
-        run: python -m pip install tox
-      - name: Run tox -e ${{ matrix.tox_env }}
-        run: tox -- --scenario-name ${{ inputs.scenario }}
+      - run: python -m pip install tox
+      - run: tox -- test --scenario-name ${{ inputs.scenario }}
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}
           INSTALL_METHOD: ${{ matrix.install_method }}
