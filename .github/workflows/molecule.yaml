@@ -23,7 +23,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
     needs: matrix
     continue-on-error: ${{ matrix.experimental || false }}
     strategy:
