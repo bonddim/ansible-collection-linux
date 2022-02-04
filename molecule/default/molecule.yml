@@ -14,9 +14,6 @@ platforms:
       alias: "${MOLECULE_DISTRO:-ubuntu/20.04}"
 provisioner:
   name: ansible
-  config_options:
-    defaults:
-      verbosity: 2
   connection_options:
     ansible_lxd_remote: "${LXD_REMOTE:-local}"
 verifier:

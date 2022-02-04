@@ -5,10 +5,10 @@ matrix: &default
     - amazonlinux
     - centos/7/cloud
     - debian/11/cloud
-    - fedora/34/cloud
+    - fedora/35/cloud
     - oracle/8/cloud
-    - ubuntu/20.04/cloud
     - rockylinux/8/cloud
+    - ubuntu/20.04/cloud
 
 adguardhome:
   matrix:
@@ -17,15 +17,22 @@ adguardhome:
     include:
       - distro: rockylinux/8/cloud
         install_method: docker
-      - distro: ubuntu/18.04/cloud
+      - distro: ubuntu/20.04/cloud
         install_method: snap
+
+epel:
+  matrix:
+    <<: *default
+    exclude:
+      - distro: debian/11/cloud
+      - distro: ubuntu/20.04/cloud
 
 lxd:
   matrix:
     <<: *default
     exclude:
       - distro: debian/11/cloud
-      - distro: fedora/34/cloud
+      - distro: fedora/35/cloud
 
 traefik:
   matrix:
