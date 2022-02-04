@@ -5,8 +5,15 @@
 [![Last commit](https://img.shields.io/github/last-commit/bonddim/ansible-collection-linux?logo=github)](https://github.com/bonddim/ansible-collection-linux/commits/main)
 
 ## Tested with Ansible
-Tested with the stable releases of Ansible 2.9 and 2.10 and the development version of Ansible
-
+Tested with the stable releases of Ansible 2.9, 2.10, 2.11, 2.12 and the development version of Ansible on
+  - almalinux/8
+  - amazonlinux
+  - centos/7
+  - debian/11
+  - fedora/35
+  - oracle/8
+  - rockylinux/8
+  - ubuntu/20.04
 
 ## Dependencies
 ```yaml
