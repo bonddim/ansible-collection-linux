@@ -1,0 +1,8 @@
+---
+collections:
+  - name: community.general
+    version: '>=1.0.0,!=3.3.0'
+  - name: community.docker
+    version: '>=1.0.0'
+
+roles: []
