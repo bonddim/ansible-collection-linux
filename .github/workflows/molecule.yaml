@@ -8,6 +8,9 @@ on:
         required: true
         type: string
 
+env:
+  WORK_DIR: ansible_collections/bonddim/linux
+
 jobs:
   matrix:
     runs-on: ubuntu-latest
@@ -31,12 +34,15 @@ jobs:
       matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          path: ${{ env.WORK_DIR }}
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
       - uses: bonddim/action-lxd-init@stable
       - run: python -m pip install tox
       - run: tox -- test --scenario-name ${{ inputs.scenario }}
+        working-directory: ${{ env.WORK_DIR }}
         env:
           MOLECULE_DISTRO: ${{ matrix.distro }}
           INSTALL_METHOD: ${{ matrix.install_method }}
