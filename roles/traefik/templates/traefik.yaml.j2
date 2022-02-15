@@ -83,3 +83,18 @@ log:
 pilot:
   token: {{ traefik_pilot_token }}
   dashboard: true
+
+# Metrics configuration
+{% if traefik_metrics or traefik_metrics_prometheus %}
+metrics:
+  {% if traefik_metrics %}
+  {{ traefik_metrics | to_yaml }}
+  {% endif %}
+  {% if traefik_metrics_prometheus %}
+  prometheus:
+    addEntryPointsLabels: true
+    addRoutersLabels: true
+    addServicesLabels: true
+    manualRouting: true
+  {% endif %}
+{% endif %}

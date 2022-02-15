@@ -11,6 +11,15 @@ http:
       service: api@internal
       middlewares: {{ traefik_dashboard_middlewares }}
   {% endif %}
+  {% if traefik_metrics_prometheus %}
+    metrics:
+      entrypoints: [{{ traefik_enable_https | ternary('websecure', 'web') }}]
+      rule: {% if traefik_host_domainname %}"Host(`traefik.{{ traefik_host_domainname }}`) && PathPrefix(`/metrics`)"
+            {% else %}"PathPrefix(`/metrics`)"
+            {% endif %}
+      service: prometheus@internal
+      middlewares: {{ traefik_dashboard_middlewares }}
+  {% endif %}
 
   middlewares:
     default-compress:

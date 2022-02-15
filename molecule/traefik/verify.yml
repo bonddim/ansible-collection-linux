@@ -4,9 +4,9 @@
   gather_facts: false
 
   tasks:
-    - name: Send GET request to traefik dashboard
+    - name: Send GET request to traefik routes
       ansible.builtin.uri:
-        url: http://127.0.0.1/dashboard/
+        url: http://127.0.0.1/{{ item }}/
         follow_redirects: all
         user: admin
         password: admin
@@ -15,6 +15,9 @@
       until: dashboard.status == 200
       retries: 3
       delay: 5
+      loop:
+        - dashboard
+        - metrics
 
     - when: lookup('env', 'INSTALL_METHOD') == 'docker' | default('binary', true)
       block:

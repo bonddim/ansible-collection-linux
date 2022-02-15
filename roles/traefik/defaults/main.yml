@@ -46,5 +46,9 @@ traefik_provider_docker_endpoint: ""
 # Pilot
 traefik_pilot_token: ""
 
+# Metrics
+traefik_metrics: {}  # Datadog, InfluxDB, StatsD metrics config
+traefik_metrics_prometheus: false  # enable/disable internal Prometheus metrics
+
 # Custom dynamic config https://doc.traefik.io/traefik/reference/dynamic-configuration/file
 traefik_custom_config: {}

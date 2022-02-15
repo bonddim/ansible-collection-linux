@@ -59,6 +59,10 @@ traefik_provider_docker_endpoint: ""  # default docker endpoint unix:///var/run/
 # Pilot
 traefik_pilot_token: ""  # token for traefik pilot integration
 
+# Metrics
+traefik_metrics: {}  # Datadog, InfluxDB, StatsD metrics config
+traefik_metrics_prometheus: false  # enable/disable internal Prometheus metrics
+
 # Custom dynamic config
 traefik_custom_config: {}  # Refer to traefik docs https://doc.traefik.io/traefik/reference/dynamic-configuration/file
 ```
