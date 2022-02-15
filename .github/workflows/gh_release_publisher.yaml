@@ -5,32 +5,18 @@ on:
   release:
     types: ['published']
 
-env:
-  NAMESPACE: bonddim
-  COLLECTION: linux
-
 jobs:
   publish:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
-
     steps:
       - uses: actions/checkout@v2
-        with:
-          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
-      - name: Create GIT_TAG environment variable
-        run: echo "GIT_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
-      - name: Change collection version to match tag
-        run: |
-          sed -Ei "s/^version: .*/version: ${{ env.GIT_TAG }}/" galaxy.yml
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
-      - name: Install ansible-base
-        run: pip install ansible-base
-      - name: Build the collection
-        run: ansible-galaxy collection build
-      - name: Publish collection to Ansible Galaxy
-        run: ansible-galaxy collection publish --token ${{ secrets.GALAXY_TOKEN }} ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-${{ env.GIT_TAG }}.tar.gz
+      - run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+      - name: Change collection version to match tag
+        run: |
+          sed -Ei "s/^version: .*/version: ${{ env.GIT_TAG }}/" galaxy.yml
+      - run: python -m pip install ansible-core
+      - run: ansible-galaxy collection build --verbose
+      - run: ansible-galaxy collection publish --token ${{ secrets.GALAXY_TOKEN }} bonddim-linux-${{ env.GIT_TAG }}.tar.gz
