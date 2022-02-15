@@ -24,6 +24,7 @@ traefik_log_format: json
 traefik_log_filepath: ""
 
 # HTTPS
+traefik_disable_http: false
 traefik_enable_https: false
 traefik_enable_https_redirect: true
 

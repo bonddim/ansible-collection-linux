@@ -1,16 +1,18 @@
 ---
 ### {{ ansible_managed }}
 entryPoints:
+  {% if not (traefik_disable_http and traefik_enable_https) %}
   web:
     address: :80
-  {% if traefik_enable_https %}
-    {% if traefik_enable_https_redirect %}
+    {% if traefik_enable_https and traefik_enable_https_redirect %}
     http:
       redirections:
         entryPoint:
           to: websecure
           scheme: https
     {% endif %}
+  {% endif %}
+  {% if traefik_enable_https %}
   websecure:
     address: :443
     http:
