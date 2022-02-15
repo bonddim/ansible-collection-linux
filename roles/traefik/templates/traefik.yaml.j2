@@ -78,3 +78,8 @@ log:
   level: {{ traefik_log_level }}
   format: {{ traefik_log_format }}
   filePath: {{ traefik_log_filepath }}
+
+# Pilot configuration
+pilot:
+  token: {{ traefik_pilot_token }}
+  dashboard: true

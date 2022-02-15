@@ -43,5 +43,8 @@ traefik_provider_docker_exposebydefault: false
 traefik_provider_docker_defaultrule: ""
 traefik_provider_docker_endpoint: ""
 
+# Pilot
+traefik_pilot_token: ""
+
 # Custom dynamic config https://doc.traefik.io/traefik/reference/dynamic-configuration/file
 traefik_custom_config: {}
