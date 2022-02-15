@@ -2,7 +2,7 @@
 namespace: bonddim
 name: linux
 description: Linux roles collection for different purposes
-version: 1.3.2
+version: 1.4.2
 authors:
   - Dmytro Bondar
 
