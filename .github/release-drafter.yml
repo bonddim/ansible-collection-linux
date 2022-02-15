@@ -3,12 +3,8 @@ categories:
     label: 'roles'  #9126A2
   - title: 'Plugins Changes'
     label: 'plugins'  #A74EBB
-  - title: 'Features'
-    label: 'enhancement'
-  - title: 'Bug Fixes'
-    label: 'bug'
-  - title: 'Documentation'
-    label: 'documentation'
+  - title: 'CI Changes'
+    label: 'ci'
   - title: 'Deprecations'
     label: 'deprecated'  #CFD3D7
 exclude-labels:

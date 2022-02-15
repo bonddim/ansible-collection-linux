@@ -1,9 +1,9 @@
 ---
-documentation:
-  - 'README.md'
 plugins:
   - 'plugins/**/*'
 roles:
-  - any: ['roles/**/*', '.github/workflows/role_*']
+  - any: ['roles/**/*']
+ci:
+  - any: ['tox.ini', '.github/workflows/*', '!.github/workflows/gh_*']
 skip-changelog:
-  - any: ['.github/*', '.github/workflows/gh_*', 'molecule/**/*', 'requirements.txt', '*lint']
+  - any: ['.github/*', '.github/workflows/gh_*', 'molecule/**/*', 'requirements.yml', '*lint']
