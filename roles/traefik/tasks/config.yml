@@ -1,31 +1,31 @@
 ---
 - name: Generate static config
   ansible.builtin.template:
-    dest: "{{ traefik_configfile_static }}"
+    dest: '{{ traefik_configfile_static }}'
     src: traefik.yaml.j2
     lstrip_blocks: true
     trim_blocks: true
-    owner: "{{ traefik_user }}"
-    group: "{{ traefik_group }}"
+    owner: '{{ traefik_user }}'
+    group: '{{ traefik_group }}'
     mode: 0640
   register: _traefik_config
   notify: traefik_restart
 
 - name: Generate dynamic config (default)
   ansible.builtin.template:
-    dest: "{{ traefik_configdir_dynamic }}/default.yaml"
+    dest: '{{ traefik_configdir_dynamic }}/default.yaml'
     src: default.yaml.j2
     lstrip_blocks: true
     trim_blocks: true
-    owner: "{{ traefik_user }}"
-    group: "{{ traefik_group }}"
+    owner: '{{ traefik_user }}'
+    group: '{{ traefik_group }}'
     mode: 0640
 
 - name: Generate dynamic config (custom)
   ansible.builtin.copy:
-    dest: "{{ traefik_configdir_dynamic }}/custom.yaml"
-    content: "{{ traefik_custom_config | to_yaml(indent=2,width=180) }}"
-    owner: "{{ traefik_user }}"
-    group: "{{ traefik_group }}"
+    dest: '{{ traefik_configdir_dynamic }}/custom.yaml'
+    content: '{{ traefik_custom_config | to_yaml(indent=2,width=180) }}'
+    owner: '{{ traefik_user }}'
+    group: '{{ traefik_group }}'
     mode: 0640
   when: traefik_custom_config | length > 0

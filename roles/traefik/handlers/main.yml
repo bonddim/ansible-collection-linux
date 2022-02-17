@@ -5,6 +5,6 @@
     name: traefik.service
     state: restarted
     enabled: true
-    daemon_reload: "{{ _traefik_service_file.changed | default(false) }}"
+    daemon_reload: '{{ _traefik_service_file.changed | default(false) }}'
   listen: traefik_restart
   when: traefik_install_method == 'binary'

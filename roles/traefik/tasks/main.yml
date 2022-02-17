@@ -14,7 +14,7 @@
 
 - name: Run install method tasks
   ansible.builtin.include_tasks:
-    file: "install_{{ traefik_install_method }}.yml"
+    file: 'install_{{ traefik_install_method }}.yml'
     apply:
       tags: traefik, traefik-install
   tags: traefik, traefik-install

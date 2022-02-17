@@ -2,7 +2,7 @@
 dependencies: []
 
 galaxy_info:
-  description: "Deploy traefik v2 with TLS support"
+  description: 'Deploy traefik v2 with TLS support'
   platforms:
     - name: Ubuntu
       versions:
