@@ -8,7 +8,7 @@ traefik_host_domainname: ''
 traefik_env: {}
 
 # Docker related vars
-traefik_docker_network: bridge
+traefik_docker_network: traefik
 
 # Dashboard
 traefik_dashboard_enable: true

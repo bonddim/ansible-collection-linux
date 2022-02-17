@@ -20,7 +20,7 @@ traefik_host_domainname: ""  # your domain name
 traefik_env: {}  # dict with environment variables, mostly used for acme dns provider settings
 
 # Container related vars
-traefik_docker_network: bridge  # docker network name for traefik proxy
+traefik_docker_network: traefik  # docker network name for traefik proxy
 
 # Dashboard
 traefik_dashboard_enable: true  # enable/disable dashboard
