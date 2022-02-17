@@ -4,6 +4,6 @@ plugins:
 roles:
   - any: ['roles/**/*']
 ci:
-  - any: ['tox.ini', '.github/workflows/*', '!.github/workflows/gh_*']
+  - any: ['tox.ini', '.github/workflows/roles_*', '.github/workflows/molecule.yaml', 'molecule/**/*']
 skip-changelog:
-  - any: ['.github/*', '.github/workflows/gh_*', 'molecule/**/*', 'requirements.yml', '*lint']
+  - any: ['.github/*', '.github/workflows/gh_*', 'requirements.yml', '*lint']
