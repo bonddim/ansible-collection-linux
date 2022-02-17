@@ -8,24 +8,23 @@
   community.docker.docker_container:
     name: traefik
     image: 'traefik:{{ traefik_version }}'
-    pull: true
-    ignore_image: false
-    state: started
-    recreate: false
-    restart: '{{ _traefik_config.changed | default(false) }}'
-    restart_policy: unless-stopped
-    container_default_behavior: "{{ (ansible_version.full is version('2.10', '>=')) | ternary('compatibility', omit) }}"
-    network_mode: '{{ traefik_docker_network }}'
-    security_opts:
-      - no-new-privileges:true
-    published_ports:
-      - '80:80'
-      - '443:443'
     command_handling: correct
     command: ['--configfile={{ traefik_configfile_static }}']
+    comparisons: {'*': strict}
     env: '{{ traefik_env }}'
+    network_mode: '{{ traefik_docker_network }}'
+    published_ports: '{{ traefik_published_ports | select | list }}'
+    pull: true
+    recreate: false
+    restart_policy: unless-stopped
+    restart: '{{ _traefik_config.changed | default(false) }}'
+    security_opts: ['no-new-privileges:true']
+    state: started
     volumes: '{{ traefik_mount_volumes | select | list }}'
   vars:
     traefik_mount_volumes:
       - '{{ traefik_home }}:{{ traefik_home }}'
-      - "{{ traefik_provider_docker_endpoint | ternary('', '/var/run/docker.sock:/var/run/docker.sock:ro') }}"
+      - '{{ "/var/run/docker.sock:/var/run/docker.sock:ro" if not traefik_provider_docker_endpoint }}'
+    traefik_published_ports:
+      - '{{ "80:80" if not (traefik_disable_http and traefik_enable_https) }}'
+      - '{{ "443:443" if traefik_enable_https }}'
