@@ -26,6 +26,3 @@
   ansible.builtin.file:
     path: '{{ traefik_home }}'
     state: absent
-
-- name: End play
-  meta: end_play
