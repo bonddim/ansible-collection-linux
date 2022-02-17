@@ -57,7 +57,7 @@ traefik_provider_docker: false  # enable/disable docker provider
 traefik_provider_docker_exposebydefault: false  # enable/disable expose by default
 traefik_provider_docker_defaultrule: ""  # default rule for docker provider
 traefik_provider_docker_endpoint: ""  # default docker endpoint unix:///var/run/docker.sock
-
+traefik_providers: {} # providers config https://doc.traefik.io/traefik/providers/overview/
 # Pilot
 traefik_pilot_token: ""  # token for traefik pilot integration
 

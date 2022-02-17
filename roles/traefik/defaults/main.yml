@@ -44,6 +44,7 @@ traefik_provider_docker: false
 traefik_provider_docker_exposebydefault: false
 traefik_provider_docker_defaultrule: ''
 traefik_provider_docker_endpoint: ''
+traefik_providers: {} # providers config https://doc.traefik.io/traefik/providers/overview/
 
 # Pilot
 traefik_pilot_token: ''
