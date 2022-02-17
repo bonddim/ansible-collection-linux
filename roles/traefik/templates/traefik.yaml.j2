@@ -93,9 +93,9 @@ pilot:
 {% if traefik_metrics or traefik_metrics_prometheus %}
 # Metrics configuration
 metrics:
-  {% if traefik_metrics %}
-  {{ traefik_metrics | to_yaml }}
-  {% endif %}
+  {% for item, config in traefik_metrics.items() %}
+  {{ item }}: {{ config }}
+  {% endfor %}
   {% if traefik_metrics_prometheus %}
   prometheus:
     addEntryPointsLabels: true
