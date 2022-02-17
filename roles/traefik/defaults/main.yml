@@ -2,8 +2,8 @@
 # defaults file for traefik role
 # Common vars
 traefik_version: latest
-traefik_install_method: binary # possible values: binary, docker
-traefik_uninstall_purge: false # removes traefik home directory during uninstall
+traefik_install_method: binary  # possible values: binary, docker
+traefik_uninstall_purge: false  # removes traefik home directory during uninstall
 
 traefik_host_domainname: ''
 traefik_env: {}
@@ -17,7 +17,7 @@ traefik_dashboard_middlewares: auth-basic@file
 
 # Basic auth
 traefik_basic_auth_user: admin
-traefik_basic_auth_pass: $apr1$MR6nE9XC$lC2fnUmGLmsZDGqNlcdxU0 # 'admin' - generated with htpasswd
+traefik_basic_auth_pass: $apr1$MR6nE9XC$lC2fnUmGLmsZDGqNlcdxU0  # 'admin' - generated with htpasswd
 
 # Logs
 traefik_log_level: ERROR
@@ -33,7 +33,7 @@ traefik_enable_https_redirect: true
 traefik_acme_enable: true
 traefik_acme_email: ''
 traefik_acme_domains: [{main: '{{ traefik_host_domainname }}', sans: ['*.{{ traefik_host_domainname }}']}]
-traefik_acme_challenge: dns # possible values: dns, tls, http
+traefik_acme_challenge: dns  # possible values: dns, tls, http
 traefik_acme_dns_provider: ''
 traefik_acme_dns_resolvers: ['1.1.1.1:53', '8.8.8.8:53']
 traefik_acme_dns_disablepropagationcheck: false
@@ -44,17 +44,17 @@ traefik_provider_docker: false
 traefik_provider_docker_exposebydefault: false
 traefik_provider_docker_defaultrule: ''
 traefik_provider_docker_endpoint: ''
-traefik_providers: {} # providers config https://doc.traefik.io/traefik/providers/overview/
+traefik_providers: {}  # providers config https://doc.traefik.io/traefik/providers/overview/
 
 # Pilot
 traefik_pilot_token: ''
 
 # Metrics
-traefik_metrics: {} # Datadog, InfluxDB, StatsD metrics config
-traefik_metrics_prometheus: false # enable/disable internal Prometheus metrics
+traefik_metrics: {}  # Datadog, InfluxDB, StatsD metrics config
+traefik_metrics_prometheus: false  # enable/disable internal Prometheus metrics
 
 # Tracing
-traefik_tracing: {} # https://doc.traefik.io/traefik/observability/tracing/overview/
+traefik_tracing: {}  # https://doc.traefik.io/traefik/observability/tracing/overview/
 
 # Custom dynamic config https://doc.traefik.io/traefik/reference/dynamic-configuration/file
 traefik_custom_config: {}
