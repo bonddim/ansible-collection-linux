@@ -65,6 +65,9 @@ traefik_pilot_token: ""  # token for traefik pilot integration
 traefik_metrics: {}  # Datadog, InfluxDB, StatsD metrics config
 traefik_metrics_prometheus: false  # enable/disable internal Prometheus metrics
 
+# Tracing
+traefik_tracing: {}  # https://doc.traefik.io/traefik/observability/tracing/overview/
+
 # Custom dynamic config
 traefik_custom_config: {}  # Refer to traefik docs https://doc.traefik.io/traefik/reference/dynamic-configuration/file
 ```

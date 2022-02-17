@@ -104,3 +104,11 @@ metrics:
     manualRouting: true
   {% endif %}
 {% endif %}
+
+{% if traefik_tracing %}
+# Tracing configuration
+tracing:
+{% for item, config in traefik_tracing.items() %}
+  {{ item }}: {{ config }}
+{% endfor %}
+{% endif %}
