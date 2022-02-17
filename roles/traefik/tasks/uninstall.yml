@@ -1,0 +1,31 @@
+---
+- name: Stop traefik container
+  community.docker.docker_container:
+    name: traefik
+    state: absent
+  when: traefik_install_method == 'docker'
+
+- name: Stop traefik service
+  ansible.builtin.systemd:
+    name: traefik.service
+    enabled: false
+    state: stopped
+
+- name: Remove traefik binary
+  ansible.builtin.file:
+    path: '{{ traefik_bin_path }}'
+    state: absent
+
+- name: Remove traefik user
+  ansible.builtin.user:
+    name: '{{ traefik_user }}'
+    force: '{{ traefik_uninstall_purge }}'
+    state: absent
+
+- name: Remove traefik home
+  ansible.builtin.file:
+    path: '{{ traefik_home }}'
+    state: absent
+
+- name: End play
+  meta: end_play

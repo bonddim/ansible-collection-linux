@@ -1,5 +1,9 @@
 ---
 # tasks file for traefik role
+- name: Uninstall
+  ansible.builtin.import_tasks: uninstall.yml
+  tags: traefik, traefik-uninstall, never
+
 - name: Check required variables
   ansible.builtin.import_tasks: assert.yml
   tags: traefik, assert, always
