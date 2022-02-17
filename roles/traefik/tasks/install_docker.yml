@@ -21,8 +21,8 @@
     published_ports:
       - "80:80"
       - "443:443"
-    command:
-      - --configfile "{{ traefik_configfile_static }}"
+    command_handling: correct
+    command: ['--configfile={{ traefik_configfile_static }}']
     env: "{{ traefik_env }}"
     volumes: "{{ traefik_mount_volumes | select | list }}"
   vars:
