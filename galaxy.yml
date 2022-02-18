@@ -34,5 +34,5 @@ build_ignore:
   - .gitignore
   - .yamllint
   - molecule
-  - requirements.yml
+  - dependencies.yml
   - tox.ini

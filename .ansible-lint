@@ -1,6 +1,8 @@
 ---
 exclude_paths:
+  - .ansible-lint
   - .github
+  - dependencies.yml
   - molecule
 skip_list:
   - meta-no-info
